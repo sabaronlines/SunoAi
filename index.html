@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Suno AI Master Auto-Studio</title>
+    <title>MANOJ MUSIC STUDIO</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,45 +13,157 @@
             -webkit-tap-highlight-color: transparent;
         }
         body {
-            background-color: #050508;
-            color: #f1f5f9;
+            background: linear-gradient(135deg, #fff5f9 0%, #ffe4f1 50%, #ffffff 100%);
+            color: #1e1b2e;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
             padding: 12px;
+            overflow-x: hidden;
+            position: relative;
         }
+
+        /* Floating Music Notes Background Animation */
+        .music-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .note {
+            position: absolute;
+            bottom: -50px;
+            color: #ff1493;
+            font-size: 22px;
+            opacity: 0;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.6);
+            animation: floatNotes 9s linear infinite;
+        }
+        .note:nth-child(1) { left: 8%; font-size: 20px; animation-delay: 0s; animation-duration: 8s; }
+        .note:nth-child(2) { left: 22%; font-size: 28px; animation-delay: 2s; animation-duration: 10s; color: #ff69b4; }
+        .note:nth-child(3) { left: 38%; font-size: 18px; animation-delay: 4s; animation-duration: 7.5s; }
+        .note:nth-child(4) { left: 54%; font-size: 26px; animation-delay: 1s; animation-duration: 9.5s; color: #ec4899; }
+        .note:nth-child(5) { left: 70%; font-size: 22px; animation-delay: 3.5s; animation-duration: 8.5s; }
+        .note:nth-child(6) { left: 84%; font-size: 30px; animation-delay: 5s; animation-duration: 11s; color: #ff1493; }
+        .note:nth-child(7) { left: 93%; font-size: 19px; animation-delay: 2.5s; animation-duration: 9s; }
+
+        @keyframes floatNotes {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.75;
+            }
+            80% {
+                opacity: 0.65;
+            }
+            100% {
+                transform: translateY(-108vh) rotate(360deg) scale(1.25);
+                opacity: 0;
+            }
+        }
+
+        /* Main Studio Glass Card (White Pink Neon) */
         .app-box {
+            position: relative;
+            z-index: 1;
             width: 100%;
             max-width: 480px;
-            background: #0c0c14;
-            border: 1.5px solid #9333ea;
-            box-shadow: 0 0 28px rgba(147, 51, 234, 0.3);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 2px solid #ff1493;
+            box-shadow: 0 0 25px rgba(255, 20, 147, 0.28), inset 0 0 12px rgba(255, 105, 180, 0.15);
+            border-radius: 18px;
             padding: 18px;
             margin-top: 6px;
         }
+
+        /* Hacker Style Glitch & Cyber Scan Logo Animation */
         .header {
             text-align: center;
             margin-bottom: 14px;
+            padding: 8px 4px;
+            border-bottom: 1px dashed rgba(255, 20, 147, 0.35);
         }
-        .header h1 {
-            color: #d8b4fe;
-            font-size: 19px;
-            letter-spacing: 1px;
-            font-weight: 800;
+        .hacker-logo {
+            position: relative;
+            display: inline-block;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #ff1493;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 20, 147, 0.55), 0 0 18px rgba(255, 105, 180, 0.4);
+            animation: hackerPulse 2.5s infinite alternate;
         }
-        .header p {
-            color: #22c55e;
-            font-size: 11px;
-            margin-top: 3px;
-            font-family: monospace;
+        .hacker-logo::before,
+        .hacker-logo::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .hacker-logo::before {
+            left: 2px;
+            text-shadow: -2px 0 #00e5ff;
+            clip-path: inset(20% 0 45% 0);
+            animation: glitchAnim1 2.2s infinite linear alternate-reverse;
+        }
+        .hacker-logo::after {
+            left: -2px;
+            text-shadow: 2px 0 #ff007f;
+            clip-path: inset(55% 0 15% 0);
+            animation: glitchAnim2 1.8s infinite linear alternate-reverse;
         }
 
-        /* API Key Bar */
+        @keyframes hackerPulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.02); filter: brightness(1.15); }
+        }
+        @keyframes glitchAnim1 {
+            0% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
+            25% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -1px); }
+            50% { clip-path: inset(30% 0 40% 0); transform: translate(-1px, 2px); }
+            75% { clip-path: inset(75% 0 5% 0); transform: translate(2px, 0px); }
+            100% { clip-path: inset(15% 0 60% 0); transform: translate(-2px, -1px); }
+        }
+        @keyframes glitchAnim2 {
+            0% { clip-path: inset(65% 0 10% 0); transform: translate(2px, -1px); }
+            30% { clip-path: inset(15% 0 65% 0); transform: translate(-2px, 1px); }
+            60% { clip-path: inset(45% 0 30% 0); transform: translate(1px, -2px); }
+            100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 2px); }
+        }
+
+        .header p {
+            color: #d6006e;
+            font-size: 11px;
+            margin-top: 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .cursor-blink {
+            animation: blink 0.9s infinite;
+        }
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* API Key Bar (White-Pink Neon) */
         .api-bar {
-            background: #13131f;
-            border: 1px solid #3b0764;
+            background: #fff0f7;
+            border: 1.5px solid #ff69b4;
             border-radius: 10px;
             padding: 6px 8px;
             margin-bottom: 14px;
@@ -63,30 +175,33 @@
             flex: 1;
             background: transparent;
             border: none;
-            color: #fff;
+            color: #1e1b2e;
             padding: 6px;
             font-size: 12px;
+            font-weight: 600;
             outline: none;
         }
+        .api-bar input::placeholder { color: #a8557c; }
         .api-bar button {
-            background: #7e22ce;
+            background: linear-gradient(90deg, #ff1493, #ff69b4);
             color: #fff;
             border: none;
             padding: 6px 12px;
             border-radius: 7px;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
         }
 
         /* Top Tabs */
         .nav-tabs {
             display: flex;
             gap: 6px;
-            background: #07070c;
+            background: #ffe6f2;
             padding: 5px;
             border-radius: 12px;
-            border: 1px solid #3b0764;
+            border: 1.5px solid #ff85c0;
             margin-bottom: 16px;
         }
         .tab-btn {
@@ -95,16 +210,16 @@
             border: none;
             border-radius: 9px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             background: transparent;
-            color: #94a3b8;
+            color: #9d174d;
             transition: 0.2s;
         }
         .tab-btn.active {
-            background: linear-gradient(90deg, #7e22ce, #a855f7);
+            background: linear-gradient(90deg, #ff1493, #ec4899);
             color: #ffffff;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
+            box-shadow: 0 3px 12px rgba(255, 20, 147, 0.45);
         }
 
         .section-view { display: none; }
@@ -115,18 +230,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #131320;
-            border: 1.5px solid #7e22ce;
+            background: #ffffff;
+            border: 1.5px dashed #ff1493;
             border-radius: 12px;
             padding: 12px;
             margin-bottom: 14px;
             gap: 10px;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.08);
         }
         .modern-upload:active {
-            background: #1b1b2e;
-            border-color: #c084fc;
+            background: #fff0f7;
+            transform: scale(0.99);
         }
         .upload-left {
             display: flex;
@@ -137,8 +253,8 @@
         .upload-icon {
             width: 40px;
             height: 40px;
-            background: rgba(168, 85, 247, 0.2);
-            border: 1px solid #9333ea;
+            background: #ffe4f1;
+            border: 1.5px solid #ff1493;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -149,35 +265,37 @@
         .upload-details { overflow: hidden; }
         .upload-title {
             font-size: 13.5px;
-            font-weight: 700;
-            color: #f3e8ff;
+            font-weight: 800;
+            color: #831843;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .upload-sub {
             font-size: 11px;
-            color: #38bdf8;
+            color: #db2777;
+            font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             margin-top: 2px;
         }
         .browse-pill {
-            background: #7e22ce;
+            background: linear-gradient(90deg, #ff1493, #ff69b4);
             color: #fff;
             font-size: 11px;
             font-weight: 800;
             padding: 8px 13px;
             border-radius: 8px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
         }
 
         /* Instant One-Tap Auto Filter Cards */
         .filter-title {
             font-size: 12px;
-            color: #d8b4fe;
-            font-weight: 700;
+            color: #9d174d;
+            font-weight: 800;
             margin-bottom: 9px;
             display: block;
             text-align: center;
@@ -189,8 +307,8 @@
             margin-bottom: 14px;
         }
         .auto-filter-btn {
-            background: #131320;
-            border: 1.5px solid #6b21a8;
+            background: #ffffff;
+            border: 1.5px solid #ff69b4;
             border-radius: 13px;
             padding: 14px 10px;
             text-align: center;
@@ -201,17 +319,18 @@
             align-items: center;
             justify-content: center;
             width: 100%;
+            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.1);
         }
         .auto-filter-btn:active {
             transform: scale(0.97);
         }
         .auto-filter-btn.active-run {
-            background: rgba(147, 51, 234, 0.25);
-            border-color: #22c55e;
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
+            background: #fff0f7;
+            border-color: #ff1493;
+            box-shadow: 0 0 18px rgba(255, 20, 147, 0.45);
         }
         .auto-filter-btn:disabled {
-            opacity: 0.4;
+            opacity: 0.45;
             cursor: not-allowed;
         }
         .f-badge {
@@ -220,24 +339,25 @@
             font-weight: 800;
             padding: 3px 8px;
             border-radius: 5px;
-            background: #2e1065;
-            color: #d8b4fe;
+            background: #ffe4f1;
+            color: #be185d;
             margin-bottom: 6px;
             font-family: monospace;
         }
         .auto-filter-btn.active-run .f-badge {
-            background: #22c55e;
-            color: #050508;
+            background: #ff1493;
+            color: #ffffff;
         }
         .f-name {
             font-size: 13.5px;
-            font-weight: 800;
-            color: #ffffff;
+            font-weight: 900;
+            color: #831843;
             display: block;
         }
         .f-desc {
             font-size: 10.5px;
-            color: #94a3b8;
+            color: #6b7280;
+            font-weight: 600;
             display: block;
             margin-top: 4px;
             line-height: 1.35;
@@ -246,14 +366,14 @@
             margin-top: 8px;
             font-size: 10px;
             font-weight: 800;
-            color: #4ade80;
+            color: #ff1493;
             font-family: monospace;
         }
 
         /* Textareas for Lyrics & Style */
         .field-label {
-            color: #e9d5ff;
-            font-weight: 700;
+            color: #9d174d;
+            font-weight: 800;
             font-size: 12px;
             display: block;
             margin-bottom: 6px;
@@ -261,22 +381,27 @@
         textarea {
             width: 100%;
             height: 125px;
-            background-color: #07070c;
-            border: 1.5px solid #581c87;
-            color: #ffffff;
+            background-color: #ffffff;
+            border: 1.5px solid #ff69b4;
+            color: #1e1b2e;
             padding: 11px;
             font-size: 14px;
+            font-weight: 600;
             border-radius: 10px;
             resize: vertical;
             outline: none;
             margin-bottom: 12px;
             font-family: monospace;
+            box-shadow: inset 0 2px 6px rgba(255, 20, 147, 0.06);
         }
-        textarea:focus { border-color: #c084fc; }
+        textarea:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.25);
+        }
         .style-box {
             height: 62px;
-            border-color: #16a34a;
-            color: #86efac;
+            border-color: #ec4899;
+            color: #831843;
             font-size: 12px;
         }
 
@@ -296,27 +421,30 @@
             letter-spacing: 0.4px;
         }
         .btn-ai {
-            background: linear-gradient(90deg, #0284c7, #2563eb);
+            background: linear-gradient(90deg, #ec4899, #f43f5e);
             color: #ffffff;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
         }
         .btn-gen {
-            background: linear-gradient(90deg, #7e22ce, #a855f7);
+            background: linear-gradient(90deg, #ff1493, #ff69b4);
             color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.35);
         }
-        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
         .btn-dl, .btn-copy {
-            background: #22c55e;
-            color: #050508;
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
         .btn-dl { display: none; }
         .status-msg {
             text-align: center;
             font-size: 12px;
-            color: #facc15;
+            color: #be185d;
             min-height: 20px;
             margin: 8px 0;
             font-family: monospace;
-            font-weight: bold;
+            font-weight: 800;
         }
         audio {
             width: 100%;
@@ -329,10 +457,21 @@
 </head>
 <body>
 
+<!-- Floating Music Notes Background -->
+<div class="music-bg">
+    <span class="note">🎵</span>
+    <span class="note">🎶</span>
+    <span class="note">🎼</span>
+    <span class="note">🎧</span>
+    <span class="note">🎵</span>
+    <span class="note">🎶</span>
+    <span class="note">🎹</span>
+</div>
+
 <div class="app-box">
     <div class="header">
-        <h1>SUNO AI MASTER AUTO-STUDIO</h1>
-        <p>|> FULL TRACK (UP TO 8 MIN) • ~8-10MB EXPORT</p>
+        <div class="hacker-logo" data-text="MANOJ MUSIC STUDIO">MANOJ MUSIC STUDIO</div>
+        <p>[SYSTEM_ACTIVE] |> AI AUDIO BYPASS &amp; LYRICS ENGINE<span class="cursor-blink">_</span></p>
     </div>
 
     <!-- Gemini API Key -->
@@ -344,7 +483,7 @@
     <!-- Tabs -->
     <div class="nav-tabs">
         <button class="tab-btn active" id="tabAudioBtn" onclick="switchTab('audio')">🎧 AUTO AUDIO</button>
-        <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE & LYRICS</button>
+        <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE &amp; LYRICS</button>
     </div>
 
     <!-- TAB 1: FULL SONG AUDIO FILTER & ~10MB AUTO DOWNLOAD -->
@@ -382,7 +521,7 @@
             </button>
         </div>
 
-        <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 AUTO-DETECT STYLE & LYRICS</button>
+        <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 AUTO-DETECT STYLE &amp; LYRICS</button>
 
         <div class="status-msg" id="statusBox">पहले ऊपर से अपना गाना सेलेक्ट करें</div>
 
@@ -390,7 +529,7 @@
         <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.WAV)</a>
     </div>
 
-    <!-- TAB 2: DIRECT JP DIGITAL STYLE LYRICS BYPASS -->
+    <!-- TAB 2: DIRECT LYRICS BYPASS -->
     <div id="lyricsSection" class="section-view">
         <label class="field-label" for="detectedStyle">🎸 DETECTED MUSIC STYLE (Suno Style Prompt):</label>
         <textarea id="detectedStyle" class="style-box" placeholder="गाना अपलोड करके Auto-Detect दबाने पर म्यूज़िक स्टाइल यहाँ आ जाएगा..."></textarea>
@@ -482,19 +621,17 @@
             const rate = isFilter1 ? 1.025 : 1.045;
             const detuneCents = isFilter1 ? 18 : 38;
 
-            // Support full song up to 8 minutes (480 seconds)
             const maxAllowedSec = 480;
             const effectiveDuration = Math.min(audioBuf.duration, maxAllowedSec);
             const outDurationSec = effectiveDuration / rate;
 
-            // Dynamically compute sample rate so even a 5 to 8 minute full song stays right around ~9.5 MB
             const targetMaxBytes = 9.8 * 1024 * 1024;
             const computedRate = Math.floor((targetMaxBytes / 2) / outDurationSec);
             const finalSampleRate = Math.min(22050, Math.max(11025, computedRate));
             const outLength = Math.floor(outDurationSec * finalSampleRate);
 
             const offlineCtx = new OfflineAudioContext(
-                1, // Mono channel keeps full 5-8 min track around ~9-10 MB
+                1,
                 outLength,
                 finalSampleRate
             );
@@ -504,7 +641,6 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // Stage 1: Smooth Volcano Dynamic Sweep
             const volcanoFilter = offlineCtx.createBiquadFilter();
             volcanoFilter.type = "peaking";
             volcanoFilter.frequency.value = isFilter1 ? 1300 : 1550;
@@ -520,17 +656,14 @@
             lfoGain.connect(volcanoFilter.frequency);
             lfo.start(0);
 
-            // Stage 2: Crisp Vocal Clarity Boost
             const clarityFilter = offlineCtx.createBiquadFilter();
             clarityFilter.type = "highshelf";
             clarityFilter.frequency.value = 3000;
             clarityFilter.gain.value = isFilter1 ? 1.5 : 3.0;
 
-            // Stage 3: Micro Phase Offset
             const phaseDelay = offlineCtx.createDelay();
             phaseDelay.delayTime.value = isFilter1 ? 0.004 : 0.008;
 
-            // Stage 4: Sub-Audible Harmonic Scrambler
             const maskOsc = offlineCtx.createOscillator();
             const maskGain = offlineCtx.createGain();
             maskOsc.type = "triangle";
@@ -562,7 +695,7 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `SunoFullTrack_F${filterNum}_${randNum}.wav`;
+            const finalFileName = `ManojStudio_F${filterNum}_${randNum}.wav`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
@@ -570,7 +703,6 @@
             dlBtn.innerText = `⬇️ दोबारा डाउनलोड करें (${outSizeMB} MB)`;
             dlBtn.style.display = 'block';
 
-            // Automatic Download Trigger
             const autoLink = document.createElement('a');
             autoLink.href = blobUrl;
             autoLink.download = finalFileName;
