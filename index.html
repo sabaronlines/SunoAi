@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suno AI Master Auto-Studio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: #050508;
+            color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 12px;
+        }
+        .app-box {
+            width: 100%;
+            max-width: 480px;
+            background: #0c0c14;
+            border: 1.5px solid #9333ea;
+            box-shadow: 0 0 28px rgba(147, 51, 234, 0.3);
+            border-radius: 16px;
+            padding: 18px;
+            margin-top: 6px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .header h1 {
+            color: #d8b4fe;
+            font-size: 19px;
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+        .header p {
+            color: #22c55e;
+            font-size: 11px;
+            margin-top: 3px;
+            font-family: monospace;
+        }
+
+        /* API Key Bar */
+        .api-bar {
+            background: #13131f;
+            border: 1px solid #3b0764;
+            border-radius: 10px;
+            padding: 6px 8px;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .api-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+        .api-bar button {
+            background: #7e22ce;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Top Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 6px;
+            background: #07070c;
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid #3b0764;
+            margin-bottom: 16px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 11px 6px;
+            border: none;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            background: transparent;
+            color: #94a3b8;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            background: linear-gradient(90deg, #7e22ce, #a855f7);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
+        }
+
+        .section-view { display: none; }
+        .section-view.active { display: block; }
+
+        /* Modern Android 11+ Inline Upload Bar */
+        .modern-upload {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #131320;
+            border: 1.5px solid #7e22ce;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 14px;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modern-upload:active {
+            background: #1b1b2e;
+            border-color: #c084fc;
+        }
+        .upload-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+        .upload-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #9333ea;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+        .upload-details { overflow: hidden; }
+        .upload-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #f3e8ff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .upload-sub {
+            font-size: 11px;
+            color: #38bdf8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+        .browse-pill {
+            background: #7e22ce;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 8px 13px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Instant One-Tap Auto Filter Cards */
+        .filter-title {
+            font-size: 12px;
+            color: #d8b4fe;
+            font-weight: 700;
+            margin-bottom: 9px;
+            display: block;
+            text-align: center;
+        }
+        .dual-filter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .auto-filter-btn {
+            background: #131320;
+            border: 1.5px solid #6b21a8;
+            border-radius: 13px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .auto-filter-btn:active {
+            transform: scale(0.97);
+        }
+        .auto-filter-btn.active-run {
+            background: rgba(147, 51, 234, 0.25);
+            border-color: #22c55e;
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
+        }
+        .auto-filter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .f-badge {
+            display: inline-block;
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 5px;
+            background: #2e1065;
+            color: #d8b4fe;
+            margin-bottom: 6px;
+            font-family: monospace;
+        }
+        .auto-filter-btn.active-run .f-badge {
+            background: #22c55e;
+            color: #050508;
+        }
+        .f-name {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #ffffff;
+            display: block;
+        }
+        .f-desc {
+            font-size: 10.5px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 4px;
+            line-height: 1.35;
+        }
+        .f-tap-hint {
+            margin-top: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #4ade80;
+            font-family: monospace;
+        }
+
+        /* Textareas for Lyrics & Style */
+        .field-label {
+            color: #e9d5ff;
+            font-weight: 700;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        textarea {
+            width: 100%;
+            height: 125px;
+            background-color: #07070c;
+            border: 1.5px solid #581c87;
+            color: #ffffff;
+            padding: 11px;
+            font-size: 14px;
+            border-radius: 10px;
+            resize: vertical;
+            outline: none;
+            margin-bottom: 12px;
+            font-family: monospace;
+        }
+        textarea:focus { border-color: #c084fc; }
+        .style-box {
+            height: 62px;
+            border-color: #16a34a;
+            color: #86efac;
+            font-size: 12px;
+        }
+
+        /* Action Buttons */
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            margin-bottom: 10px;
+            letter-spacing: 0.4px;
+        }
+        .btn-ai {
+            background: linear-gradient(90deg, #0284c7, #2563eb);
+            color: #ffffff;
+        }
+        .btn-gen {
+            background: linear-gradient(90deg, #7e22ce, #a855f7);
+            color: #ffffff;
+        }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-dl, .btn-copy {
+            background: #22c55e;
+            color: #050508;
+        }
+        .btn-dl { display: none; }
+        .status-msg {
+            text-align: center;
+            font-size: 12px;
+            color: #facc15;
+            min-height: 20px;
+            margin: 8px 0;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        audio {
+            width: 100%;
+            margin-top: 6px;
+            margin-bottom: 10px;
+            display: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-box">
+    <div class="header">
+        <h1>SUNO AI MASTER AUTO-STUDIO</h1>
+        <p>|> ONE-TAP AUTO FILTER + AUTO DOWNLOAD READY</p>
+    </div>
+
+    <!-- Gemini API Key -->
+    <div class="api-bar">
+        <input type="password" id="geminiKeyInput" placeholder="Gemini API Key (Auto-Detect के लिए)...">
+        <button onclick="saveApiKey()" id="saveKeyBtn">SAVE</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" id="tabAudioBtn" onclick="switchTab('audio')">🎧 AUTO AUDIO</button>
+        <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE & LYRICS</button>
+    </div>
+
+    <!-- TAB 1: 100% AUTOMATIC AUDIO FILTER & DOWNLOAD -->
+    <div id="audioSection" class="section-view active">
+        
+        <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
+            <div class="upload-left">
+                <div class="upload-icon">🎵</div>
+                <div class="upload-details">
+                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
+                    <div class="upload-sub" id="fileSub">MP3, WAV, M4A, AAC • Tap to browse</div>
+                </div>
+            </div>
+            <div class="browse-pill">SELECT</div>
+        </div>
+        <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
+
+        <span class="filter-title">नीचे किसी भी फ़िल्टर पर टच करें — ऑडियो खुद जनरेट और डाउनलोड होगा:</span>
+        
+        <div class="dual-filter-grid">
+            <!-- One-Tap Auto Filter 1 -->
+            <button class="auto-filter-btn" id="btnFilter1" onclick="runAutoPipeline(1)" disabled>
+                <span class="f-badge">1-TAP • NATURAL</span>
+                <span class="f-name">AUTO FILTER #1</span>
+                <span class="f-desc">Volcano Sweep + 1.04x + 0dBFS Normalize</span>
+                <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
+            </button>
+
+            <!-- One-Tap Auto Filter 2 -->
+            <button class="auto-filter-btn" id="btnFilter2" onclick="runAutoPipeline(2)" disabled>
+                <span class="f-badge">1-TAP • HEAVY CUT</span>
+                <span class="f-name">AUTO FILTER #2</span>
+                <span class="f-desc">0.87x + -5 Pitch + 55% HF Cut + 0dBFS</span>
+                <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
+            </button>
+        </div>
+
+        <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 AUTO-DETECT STYLE & LYRICS</button>
+
+        <div class="status-msg" id="statusBox">पहले ऊपर से अपना गाना सेलेक्ट करें</div>
+
+        <audio id="player" controls playsinline></audio>
+        <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.WAV)</a>
+    </div>
+
+    <!-- TAB 2: DIRECT JP DIGITAL STYLE LYRICS BYPASS -->
+    <div id="lyricsSection" class="section-view">
+        <label class="field-label" for="detectedStyle">🎸 DETECTED MUSIC STYLE (Suno Style Prompt):</label>
+        <textarea id="detectedStyle" class="style-box" placeholder="गाना अपलोड करके Auto-Detect दबाने पर म्यूज़िक स्टाइल यहाँ आ जाएगा..."></textarea>
+        <button class="btn btn-copy" style="margin-bottom: 14px;" onclick="copyText('detectedStyle', 'copyStyleBtn')" id="copyStyleBtn">📋 COPY MUSIC STYLE</button>
+
+        <label class="field-label" for="inputLyrics">> यहाँ पे लिरिक्स डालें:</label>
+        <textarea id="inputLyrics" placeholder="यहाँ अपने गाने के बोल लिखें या पेस्ट करें..."></textarea>
+
+        <button class="btn btn-gen" onclick="generateBypass()">⚡ RE-GENERATE NEW BYPASS</button>
+
+        <label class="field-label" for="outputLyrics">// BYPASS GENERATED //</label>
+        <textarea id="outputLyrics" readonly placeholder="बदलते हुए लिरिक्स यहाँ दिखेंगे..."></textarea>
+
+        <button class="btn btn-copy" onclick="copyText('outputLyrics', 'copyLyricsBtn')" id="copyLyricsBtn">📋 COPY ENCRYPTED LYRICS</button>
+    </div>
+</div>
+
+<script>
+    let currentFile = null;
+    let blobUrl = null;
+    let isProcessing = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedKey = localStorage.getItem('gemini_studio_key');
+        if (savedKey) document.getElementById('geminiKeyInput').value = savedKey;
+    });
+
+    function saveApiKey() {
+        const key = document.getElementById('geminiKeyInput').value.trim();
+        if (!key) { alert("कृपया पहले Gemini API Key डालें!"); return; }
+        localStorage.setItem('gemini_studio_key', key);
+        const btn = document.getElementById('saveKeyBtn');
+        btn.innerText = "SAVED ✓";
+        setTimeout(() => btn.innerText = "SAVE", 2000);
+    }
+
+    function switchTab(tab) {
+        document.getElementById('audioSection').classList.toggle('active', tab === 'audio');
+        document.getElementById('lyricsSection').classList.toggle('active', tab === 'lyrics');
+        document.getElementById('tabAudioBtn').classList.toggle('active', tab === 'audio');
+        document.getElementById('tabLyricsBtn').classList.toggle('active', tab === 'lyrics');
+    }
+
+    document.getElementById('audioInput').addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            currentFile = e.target.files[0];
+            const sizeMB = (currentFile.size / (1024 * 1024)).toFixed(2);
+            document.getElementById('fileTitle').innerText = currentFile.name;
+            document.getElementById('fileSub').innerText = `Ready • ${sizeMB} MB`;
+            
+            document.getElementById('btnFilter1').disabled = false;
+            document.getElementById('btnFilter2').disabled = false;
+            document.getElementById('detectBtn').disabled = false;
+            
+            document.getElementById('btnFilter1').classList.remove('active-run');
+            document.getElementById('btnFilter2').classList.remove('active-run');
+            document.getElementById('dlBtn').style.display = 'none';
+            document.getElementById('player').style.display = 'none';
+            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! अब Auto Filter #1 या #2 पर टच करें।";
+        }
+    });
+
+    // --- 100% AUTOMATIC PIPELINE: SELECT -> RENDER -> NORMALIZE -> AUTO DOWNLOAD ---
+    async function runAutoPipeline(filterNum) {
+        if (!currentFile || isProcessing) return;
+
+        isProcessing = true;
+        const btn1 = document.getElementById('btnFilter1');
+        const btn2 = document.getElementById('btnFilter2');
+        const status = document.getElementById('statusBox');
+
+        btn1.disabled = true;
+        btn2.disabled = true;
+        btn1.classList.toggle('active-run', filterNum === 1);
+        btn2.classList.toggle('active-run', filterNum === 2);
+
+        status.innerText = `⏳ Auto Filter #${filterNum} चल रहा है (कृपया रुकें)...`;
+
+        await new Promise(r => setTimeout(r, 80));
+
+        try {
+            const arrayBuf = await currentFile.arrayBuffer();
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            const tempCtx = new AudioContextClass();
+            const audioBuf = await tempCtx.decodeAudioData(arrayBuf);
+            if (tempCtx.close) await tempCtx.close();
+
+            const isFilter1 = (filterNum === 1);
+            // Filter #1: Natural Stealth | Filter #2: Heavy Anti-Detect (0.87x + -5 Pitch + 55% HF Cut)
+            const rate = isFilter1 ? 1.04 : 0.87;
+            const detuneCents = isFilter1 ? 25 : -260;
+
+            const outLength = Math.floor(audioBuf.length / rate);
+            const offlineCtx = new OfflineAudioContext(
+                audioBuf.numberOfChannels,
+                outLength,
+                audioBuf.sampleRate
+            );
+
+            const source = offlineCtx.createBufferSource();
+            source.buffer = audioBuf;
+            source.playbackRate.value = rate;
+            source.detune.value = detuneCents;
+
+            // Stage 1: Volcano Dynamic Sweep Filter
+            const volcanoFilter = offlineCtx.createBiquadFilter();
+            volcanoFilter.type = "peaking";
+            volcanoFilter.frequency.value = isFilter1 ? 1150 : 900;
+            volcanoFilter.Q.value = isFilter1 ? 1.8 : 2.5;
+            volcanoFilter.gain.value = isFilter1 ? 5.0 : 6.5;
+
+            const lfo = offlineCtx.createOscillator();
+            const lfoGain = offlineCtx.createGain();
+            lfo.type = "sine";
+            lfo.frequency.value = isFilter1 ? 0.42 : 0.75;
+            lfoGain.gain.value = isFilter1 ? 550 : 950;
+            lfo.connect(lfoGain);
+            lfoGain.connect(volcanoFilter.frequency);
+            lfo.start(0);
+
+            // Stage 2: High-Frequency Reduction (55% Treble Cut in Filter #2)
+            const hfCutFilter = offlineCtx.createBiquadFilter();
+            hfCutFilter.type = "lowpass";
+            hfCutFilter.frequency.value = isFilter1 ? 14500 : 6800;
+            hfCutFilter.Q.value = 0.7;
+
+            // Stage 3: Micro Phase Offset
+            const phaseDelay = offlineCtx.createDelay();
+            phaseDelay.delayTime.value = isFilter1 ? 0.006 : 0.012;
+
+            // Stage 4: Sub-Audible Harmonic Scrambler
+            const maskOsc = offlineCtx.createOscillator();
+            const maskGain = offlineCtx.createGain();
+            maskOsc.type = "triangle";
+            maskOsc.frequency.value = 55;
+            maskGain.gain.value = isFilter1 ? 0.0035 : 0.006;
+            maskOsc.connect(maskGain);
+            maskGain.connect(offlineCtx.destination);
+            maskOsc.start(0);
+
+            source.connect(volcanoFilter);
+            volcanoFilter.connect(hfCutFilter);
+            hfCutFilter.connect(phaseDelay);
+            phaseDelay.connect(offlineCtx.destination);
+
+            source.start(0);
+            status.innerText = `⚙️ Auto Filter #${filterNum} + 0 dBFS रेंडर हो रहा है...`;
+
+            const rendered = await offlineCtx.startRendering();
+            normalizeToZeroDBFS(rendered);
+            const wavBlob = encodeWAV(rendered);
+
+            if (blobUrl) URL.revokeObjectURL(blobUrl);
+            blobUrl = URL.createObjectURL(wavBlob);
+
+            const player = document.getElementById('player');
+            player.src = blobUrl;
+            player.style.display = 'block';
+
+            const randNum = Math.floor(100000 + Math.random() * 900000);
+            const finalFileName = `SunoAutoFilter${filterNum}_${randNum}.wav`;
+
+            const dlBtn = document.getElementById('dlBtn');
+            dlBtn.href = blobUrl;
+            dlBtn.download = finalFileName;
+            dlBtn.style.display = 'block';
+
+            // Automatic Download Trigger
+            const autoLink = document.createElement('a');
+            autoLink.href = blobUrl;
+            autoLink.download = finalFileName;
+            document.body.appendChild(autoLink);
+            autoLink.click();
+            document.body.removeChild(autoLink);
+
+            status.innerText = `✅ Auto Filter #${filterNum} पूरा हुआ और डाउनलोड शुरू हो गया!`;
+        } catch (err) {
+            console.error(err);
+            status.innerText = "❌ Error: 60-90 सेकंड की ऑडियो क्लिप का उपयोग करें।";
+        } finally {
+            isProcessing = false;
+            btn1.disabled = false;
+            btn2.disabled = false;
+        }
+    }
+
+    function normalizeToZeroDBFS(audioBuffer) {
+        let maxPeak = 0;
+        const numChannels = audioBuffer.numberOfChannels;
+        for (let c = 0; c < numChannels; c++) {
+            const data = audioBuffer.getChannelData(c);
+            for (let i = 0; i < data.length; i++) {
+                const abs = Math.abs(data[i]);
+                if (abs > maxPeak) maxPeak = abs;
+            }
+        }
+        if (maxPeak > 0 && maxPeak < 0.99) {
+            const multiplier = 0.99 / maxPeak;
+            for (let c = 0; c < numChannels; c++) {
+                const data = audioBuffer.getChannelData(c);
+                for (let i = 0; i < data.length; i++) {
+                    data[i] *= multiplier;
+                }
+            }
+        }
+    }
+
+    function encodeWAV(abuffer) {
+        const numChan = abuffer.numberOfChannels;
+        const len = abuffer.length * numChan * 2 + 44;
+        const buf = new ArrayBuffer(len);
+        const view = new DataView(buf);
+        const chans = [];
+        let i, sample, offset = 0, pos = 0;
+
+        const u16 = d => { view.setUint16(pos, d, true); pos += 2; };
+        const u32 = d => { view.setUint32(pos, d, true); pos += 4; };
+
+        u32(0x46464952); u32(len - 8); u32(0x45564157);
+        u32(0x20746d66); u32(16); u16(1); u16(numChan);
+        u32(abuffer.sampleRate); u32(abuffer.sampleRate * 2 * numChan);
+        u16(numChan * 2); u16(16);
+        u32(0x61746164); u32(len - pos - 4);
+
+        for (i = 0; i < numChan; i++) chans.push(abuffer.getChannelData(i));
+
+        while (pos < len) {
+            for (i = 0; i < numChan; i++) {
+                sample = Math.max(-1, Math.min(1, chans[i][offset]));
+                sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+                view.setInt16(pos, sample, true);
+                pos += 2;
+            }
+            offset++;
+        }
+        return new Blob([buf], { type: "audio/wav" });
+    }
+
+    // --- AUTO DETECT STYLE & LYRICS ---
+    async function autoDetectSong() {
+        if (!currentFile) return;
+
+        const apiKey = localStorage.getItem('gemini_studio_key') || document.getElementById('geminiKeyInput').value.trim();
+        if (!apiKey) {
+            alert("Auto-Detect के लिए ऊपर बॉक्स में Gemini API Key डालकर SAVE दबाएं!");
+            return;
+        }
+
+        if (currentFile.size > 16 * 1024 * 1024) {
+            alert("फ़ाइल 16 MB से बड़ी है। कृपया छोटी ऑडियो क्लिप चुनें।");
+            return;
+        }
+
+        const detectBtn = document.getElementById('detectBtn');
+        const status = document.getElementById('statusBox');
+        detectBtn.disabled = true;
+        status.innerText = "🤖 AI गाने का स्टाइल और लिरिक्स निकाल रहा है...";
+
+        try {
+            const base64Audio = await fileToBase64(currentFile);
+            const mimeType = currentFile.type || "audio/mp3";
+
+            const promptText = `Listen to this audio carefully and return ONLY valid JSON with two keys:
+1. "style": A concise Suno AI music style prompt in English (include genre, regional vibe like Odia/Sambalpuri/Hindi/Bollywood if applicable, tempo, instruments, and vocal gender/tone, max 180 characters).
+2. "lyrics": The exact transcribed lyrics of the song in its original script (Devanagari for Hindi, Odia script for Odia/Sambalpuri, or English) formatted neatly with [Verse], [Chorus] tags.
+
+Return strictly JSON without markdown backticks.`;
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            { inline_data: { mime_type: mimeType, data: base64Audio } }
+                        ]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            if (data.error) throw new Error(data.error.message || "API Error");
+
+            let rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+            rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+
+            const parsed = JSON.parse(rawText);
+            document.getElementById('detectedStyle').value = parsed.style || "";
+            document.getElementById('inputLyrics').value = parsed.lyrics || "";
+
+            if (parsed.lyrics) generateBypass();
+
+            status.innerText = "✅ स्टाइल और बायपास लिरिक्स तैयार हैं!";
+            setTimeout(() => switchTab('lyrics'), 500);
+
+        } catch (err) {
+            console.error(err);
+            status.innerText = "❌ Error: " + (err.message || "API Key या ऑडियो चेक करें।");
+        } finally {
+            detectBtn.disabled = false;
+        }
+    }
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function generateBypass() {
+        const input = document.getElementById('inputLyrics').value;
+        if (!input.trim()) return;
+
+        const invisibles = ['\u200B', '\u200C', '\u200D', '\uFEFF'];
+        const marks = ['\u0325', '\u030A', '\u0323', '\u0307'];
+
+        let result = '';
+        const lines = input.split('\n');
+
+        for (let l = 0; l < lines.length; l++) {
+            const line = lines[l];
+            if (line.trim().startsWith('[') && line.trim().endsWith(']')) {
+                result += line + '\n';
+                continue;
+            }
+
+            const segmenter = new Intl.Segmenter('hi', { granularity: 'grapheme' });
+            const segments = Array.from(segmenter.segment(line)).map(s => s.segment);
+
+            for (let i = 0; i < segments.length; i++) {
+                const char = segments[i];
+                if (char.trim() === '' || /[.,!?'"\-*]/.test(char)) {
+                    result += char;
+                    continue;
+                }
+
+                const randInv = invisibles[Math.floor(Math.random() * invisibles.length)];
+                if (Math.random() > 0.62) {
+                    const randMark = marks[Math.floor(Math.random() * marks.length)];
+                    result += char + randMark + randInv;
+                } else {
+                    result += char + randInv;
+                }
+            }
+            if (l < lines.length - 1) result += '\n';
+        }
+
+        document.getElementById('outputLyrics').value = result;
+    }
+
+    function copyText(elementId, btnId) {
+        const output = document.getElementById(elementId);
+        if (!output.value) return;
+        
+        output.select();
+        output.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(output.value);
+
+        const btn = document.getElementById(btnId);
+        const oldText = btn.innerText;
+        btn.innerText = "✅ COPIED!";
+        setTimeout(() => { btn.innerText = oldText; }, 2000);
+    }
+</script>
+
+</body>
+</html>
