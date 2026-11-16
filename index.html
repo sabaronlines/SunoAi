@@ -332,7 +332,7 @@
 <div class="app-box">
     <div class="header">
         <h1>SUNO AI MASTER AUTO-STUDIO</h1>
-        <p>|> ONE-TAP AUTO FILTER + AUTO DOWNLOAD READY</p>
+        <p>|> BALANCED AUTO FILTER #1 & #2 + LYRICS BYPASS</p>
     </div>
 
     <!-- Gemini API Key -->
@@ -347,7 +347,7 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE & LYRICS</button>
     </div>
 
-    <!-- TAB 1: 100% AUTOMATIC AUDIO FILTER & DOWNLOAD -->
+    <!-- TAB 1: BALANCED AUTOMATIC AUDIO FILTER & DOWNLOAD -->
     <div id="audioSection" class="section-view active">
         
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
@@ -365,19 +365,19 @@
         <span class="filter-title">नीचे किसी भी फ़िल्टर पर टच करें — ऑडियो खुद जनरेट और डाउनलोड होगा:</span>
         
         <div class="dual-filter-grid">
-            <!-- One-Tap Auto Filter 1 -->
+            <!-- One-Tap Auto Filter 1: Natural Clean -->
             <button class="auto-filter-btn" id="btnFilter1" onclick="runAutoPipeline(1)" disabled>
-                <span class="f-badge">1-TAP • NATURAL</span>
+                <span class="f-badge">FILTER #1 • NATURAL CLEAN</span>
                 <span class="f-name">AUTO FILTER #1</span>
-                <span class="f-desc">Volcano Sweep + 1.04x + 0dBFS Normalize</span>
+                <span class="f-desc">Crystal Vocal + 1.03x + Smooth Volcano Sweep</span>
                 <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
             </button>
 
-            <!-- One-Tap Auto Filter 2 -->
+            <!-- One-Tap Auto Filter 2: Balanced Anti-Detect -->
             <button class="auto-filter-btn" id="btnFilter2" onclick="runAutoPipeline(2)" disabled>
-                <span class="f-badge">1-TAP • HEAVY CUT</span>
+                <span class="f-badge">FILTER #2 • BALANCED</span>
                 <span class="f-name">AUTO FILTER #2</span>
-                <span class="f-desc">0.87x + -5 Pitch + 55% HF Cut + 0dBFS</span>
+                <span class="f-desc">0.95x + Micro-Pitch + Warm EQ + Phase Shift</span>
                 <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
             </button>
         </div>
@@ -453,7 +453,7 @@
         }
     });
 
-    // --- 100% AUTOMATIC PIPELINE: SELECT -> RENDER -> NORMALIZE -> AUTO DOWNLOAD ---
+    // --- BALANCED 100% AUTOMATIC PIPELINE ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -479,9 +479,11 @@
             if (tempCtx.close) await tempCtx.close();
 
             const isFilter1 = (filterNum === 1);
-            // Filter #1: Natural Stealth | Filter #2: Heavy Anti-Detect (0.87x + -5 Pitch + 55% HF Cut)
-            const rate = isFilter1 ? 1.04 : 0.87;
-            const detuneCents = isFilter1 ? 25 : -260;
+            
+            // Filter #1: Natural Clean (1.03x + subtle +20 cents detune + crisp high-end)
+            // Filter #2: Balanced Anti-Detect (0.95x + -95 cents detune + warm 11.5kHz clarity)
+            const rate = isFilter1 ? 1.03 : 0.95;
+            const detuneCents = isFilter1 ? 20 : -95;
 
             const outLength = Math.floor(audioBuf.length / rate);
             const offlineCtx = new OfflineAudioContext(
@@ -495,45 +497,53 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // Stage 1: Volcano Dynamic Sweep Filter
+            // Stage 1: Smooth Volcano Dynamic Sweep
             const volcanoFilter = offlineCtx.createBiquadFilter();
             volcanoFilter.type = "peaking";
-            volcanoFilter.frequency.value = isFilter1 ? 1150 : 900;
-            volcanoFilter.Q.value = isFilter1 ? 1.8 : 2.5;
-            volcanoFilter.gain.value = isFilter1 ? 5.0 : 6.5;
+            volcanoFilter.frequency.value = isFilter1 ? 1250 : 1050;
+            volcanoFilter.Q.value = isFilter1 ? 1.4 : 1.9;
+            volcanoFilter.gain.value = isFilter1 ? 3.5 : 4.8;
 
             const lfo = offlineCtx.createOscillator();
             const lfoGain = offlineCtx.createGain();
             lfo.type = "sine";
-            lfo.frequency.value = isFilter1 ? 0.42 : 0.75;
-            lfoGain.gain.value = isFilter1 ? 550 : 950;
+            lfo.frequency.value = isFilter1 ? 0.35 : 0.55;
+            lfoGain.gain.value = isFilter1 ? 400 : 650;
             lfo.connect(lfoGain);
             lfoGain.connect(volcanoFilter.frequency);
             lfo.start(0);
 
-            // Stage 2: High-Frequency Reduction (55% Treble Cut in Filter #2)
-            const hfCutFilter = offlineCtx.createBiquadFilter();
-            hfCutFilter.type = "lowpass";
-            hfCutFilter.frequency.value = isFilter1 ? 14500 : 6800;
-            hfCutFilter.Q.value = 0.7;
+            // Stage 2: Balanced High-Frequency Shaping (Keeps voice crystal clear for Suno)
+            const hfFilter = offlineCtx.createBiquadFilter();
+            hfFilter.type = "lowpass";
+            hfFilter.frequency.value = isFilter1 ? 16500 : 11500;
+            hfFilter.Q.value = 0.7;
 
-            // Stage 3: Micro Phase Offset
+            // Stage 3: Vocal Presence Boost (Ensures Suno hears clear lyrics)
+            const vocalPresence = offlineCtx.createBiquadFilter();
+            vocalPresence.type = "peaking";
+            vocalPresence.frequency.value = 2800;
+            vocalPresence.Q.value = 1.2;
+            vocalPresence.gain.value = isFilter1 ? 1.5 : 2.5;
+
+            // Stage 4: Micro Phase Offset
             const phaseDelay = offlineCtx.createDelay();
-            phaseDelay.delayTime.value = isFilter1 ? 0.006 : 0.012;
+            phaseDelay.delayTime.value = isFilter1 ? 0.005 : 0.009;
 
-            // Stage 4: Sub-Audible Harmonic Scrambler
+            // Stage 5: Sub-Audible Harmonic Scrambler
             const maskOsc = offlineCtx.createOscillator();
             const maskGain = offlineCtx.createGain();
             maskOsc.type = "triangle";
             maskOsc.frequency.value = 55;
-            maskGain.gain.value = isFilter1 ? 0.0035 : 0.006;
+            maskGain.gain.value = isFilter1 ? 0.003 : 0.0045;
             maskOsc.connect(maskGain);
             maskGain.connect(offlineCtx.destination);
             maskOsc.start(0);
 
             source.connect(volcanoFilter);
-            volcanoFilter.connect(hfCutFilter);
-            hfCutFilter.connect(phaseDelay);
+            volcanoFilter.connect(hfFilter);
+            hfFilter.connect(vocalPresence);
+            vocalPresence.connect(phaseDelay);
             phaseDelay.connect(offlineCtx.destination);
 
             source.start(0);
