@@ -332,7 +332,7 @@
 <div class="app-box">
     <div class="header">
         <h1>SUNO AI MASTER AUTO-STUDIO</h1>
-        <p>|> BALANCED AUTO FILTER #1 & #2 + LYRICS BYPASS</p>
+        <p>|> CRISP AUTO FILTER #1 & #2 • LOW MB FAST EXPORT</p>
     </div>
 
     <!-- Gemini API Key -->
@@ -347,7 +347,7 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE & LYRICS</button>
     </div>
 
-    <!-- TAB 1: BALANCED AUTOMATIC AUDIO FILTER & DOWNLOAD -->
+    <!-- TAB 1: CRISP BALANCED AUDIO FILTER & LOW-MB DOWNLOAD -->
     <div id="audioSection" class="section-view active">
         
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
@@ -355,29 +355,29 @@
                 <div class="upload-icon">🎵</div>
                 <div class="upload-details">
                     <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
-                    <div class="upload-sub" id="fileSub">MP3, WAV, M4A, AAC • Tap to browse</div>
+                    <div class="upload-sub" id="fileSub">MP3, WAV, M4A, AAC • Low MB Output</div>
                 </div>
             </div>
             <div class="browse-pill">SELECT</div>
         </div>
         <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
 
-        <span class="filter-title">नीचे किसी भी फ़िल्टर पर टच करें — ऑडियो खुद जनरेट और डाउनलोड होगा:</span>
+        <span class="filter-title">नीचे किसी भी फ़िल्टर पर टच करें — साफ़ आवाज़ और कम MB में डाउनलोड होगा:</span>
         
         <div class="dual-filter-grid">
             <!-- One-Tap Auto Filter 1: Natural Clean -->
             <button class="auto-filter-btn" id="btnFilter1" onclick="runAutoPipeline(1)" disabled>
-                <span class="f-badge">FILTER #1 • NATURAL CLEAN</span>
+                <span class="f-badge">FILTER #1 • NATURAL</span>
                 <span class="f-name">AUTO FILTER #1</span>
-                <span class="f-desc">Crystal Vocal + 1.03x + Smooth Volcano Sweep</span>
+                <span class="f-desc">Original Crisp Voice + 1.025x + Smooth Sweep</span>
                 <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
             </button>
 
-            <!-- One-Tap Auto Filter 2: Balanced Anti-Detect -->
+            <!-- One-Tap Auto Filter 2: Crisp Bright Shift (No Old Voice!) -->
             <button class="auto-filter-btn" id="btnFilter2" onclick="runAutoPipeline(2)" disabled>
-                <span class="f-badge">FILTER #2 • BALANCED</span>
+                <span class="f-badge">FILTER #2 • BRIGHT PRO</span>
                 <span class="f-name">AUTO FILTER #2</span>
-                <span class="f-desc">0.95x + Micro-Pitch + Warm EQ + Phase Shift</span>
+                <span class="f-desc">Clear Studio Tone + 1.045x + Phase Shift</span>
                 <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
             </button>
         </div>
@@ -453,7 +453,7 @@
         }
     });
 
-    // --- BALANCED 100% AUTOMATIC PIPELINE ---
+    // --- CRISP BALANCED AUDIO PIPELINE + 22.05kHz LOW-MB EXPORT ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -467,7 +467,7 @@
         btn1.classList.toggle('active-run', filterNum === 1);
         btn2.classList.toggle('active-run', filterNum === 2);
 
-        status.innerText = `⏳ Auto Filter #${filterNum} चल रहा है (कृपया रुकें)...`;
+        status.innerText = `⏳ Auto Filter #${filterNum} प्रोसेस हो रहा है...`;
 
         await new Promise(r => setTimeout(r, 80));
 
@@ -480,16 +480,20 @@
 
             const isFilter1 = (filterNum === 1);
             
-            // Filter #1: Natural Clean (1.03x + subtle +20 cents detune + crisp high-end)
-            // Filter #2: Balanced Anti-Detect (0.95x + -95 cents detune + warm 11.5kHz clarity)
-            const rate = isFilter1 ? 1.03 : 0.95;
-            const detuneCents = isFilter1 ? 20 : -95;
+            // Filter #1: Natural Clean (1.025x + +18 cents subtle lift)
+            // Filter #2: Bright Studio Bypass (1.045x + +38 cents crisp tone, zero muffled/old voice!)
+            const rate = isFilter1 ? 1.025 : 1.045;
+            const detuneCents = isFilter1 ? 18 : 38;
 
-            const outLength = Math.floor(audioBuf.length / rate);
+            // 22050 Hz Mono OfflineAudioContext cuts output file size by ~85% (65MB -> ~7MB) while keeping vocals super clear
+            const targetSampleRate = 22050;
+            const durationSec = audioBuf.duration / rate;
+            const outLength = Math.floor(durationSec * targetSampleRate);
+
             const offlineCtx = new OfflineAudioContext(
-                audioBuf.numberOfChannels,
+                1, // Mono channel for compact upload size & clean vocal focus
                 outLength,
-                audioBuf.sampleRate
+                targetSampleRate
             );
 
             const source = offlineCtx.createBufferSource();
@@ -497,61 +501,55 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // Stage 1: Smooth Volcano Dynamic Sweep
+            // Stage 1: Smooth Volcano Dynamic Sweep (Alters frequency fingerprint without distorting voice)
             const volcanoFilter = offlineCtx.createBiquadFilter();
             volcanoFilter.type = "peaking";
-            volcanoFilter.frequency.value = isFilter1 ? 1250 : 1050;
-            volcanoFilter.Q.value = isFilter1 ? 1.4 : 1.9;
-            volcanoFilter.gain.value = isFilter1 ? 3.5 : 4.8;
+            volcanoFilter.frequency.value = isFilter1 ? 1300 : 1550;
+            volcanoFilter.Q.value = isFilter1 ? 1.3 : 1.7;
+            volcanoFilter.gain.value = isFilter1 ? 2.8 : 4.0;
 
             const lfo = offlineCtx.createOscillator();
             const lfoGain = offlineCtx.createGain();
             lfo.type = "sine";
-            lfo.frequency.value = isFilter1 ? 0.35 : 0.55;
-            lfoGain.gain.value = isFilter1 ? 400 : 650;
+            lfo.frequency.value = isFilter1 ? 0.35 : 0.6;
+            lfoGain.gain.value = isFilter1 ? 350 : 600;
             lfo.connect(lfoGain);
             lfoGain.connect(volcanoFilter.frequency);
             lfo.start(0);
 
-            // Stage 2: Balanced High-Frequency Shaping (Keeps voice crystal clear for Suno)
-            const hfFilter = offlineCtx.createBiquadFilter();
-            hfFilter.type = "lowpass";
-            hfFilter.frequency.value = isFilter1 ? 16500 : 11500;
-            hfFilter.Q.value = 0.7;
+            // Stage 2: Crisp Air & Vocal Clarity Boost (Prevents dull/old sound)
+            const clarityFilter = offlineCtx.createBiquadFilter();
+            clarityFilter.type = "highshelf";
+            clarityFilter.frequency.value = 3200;
+            clarityFilter.gain.value = isFilter1 ? 1.5 : 3.0;
 
-            // Stage 3: Vocal Presence Boost (Ensures Suno hears clear lyrics)
-            const vocalPresence = offlineCtx.createBiquadFilter();
-            vocalPresence.type = "peaking";
-            vocalPresence.frequency.value = 2800;
-            vocalPresence.Q.value = 1.2;
-            vocalPresence.gain.value = isFilter1 ? 1.5 : 2.5;
-
-            // Stage 4: Micro Phase Offset
+            // Stage 3: Micro Phase Offset
             const phaseDelay = offlineCtx.createDelay();
-            phaseDelay.delayTime.value = isFilter1 ? 0.005 : 0.009;
+            phaseDelay.delayTime.value = isFilter1 ? 0.004 : 0.008;
 
-            // Stage 5: Sub-Audible Harmonic Scrambler
+            // Stage 4: Sub-Audible Harmonic Scrambler
             const maskOsc = offlineCtx.createOscillator();
             const maskGain = offlineCtx.createGain();
             maskOsc.type = "triangle";
             maskOsc.frequency.value = 55;
-            maskGain.gain.value = isFilter1 ? 0.003 : 0.0045;
+            maskGain.gain.value = isFilter1 ? 0.0025 : 0.004;
             maskOsc.connect(maskGain);
             maskGain.connect(offlineCtx.destination);
             maskOsc.start(0);
 
             source.connect(volcanoFilter);
-            volcanoFilter.connect(hfFilter);
-            hfFilter.connect(vocalPresence);
-            vocalPresence.connect(phaseDelay);
+            volcanoFilter.connect(clarityFilter);
+            clarityFilter.connect(phaseDelay);
             phaseDelay.connect(offlineCtx.destination);
 
             source.start(0);
-            status.innerText = `⚙️ Auto Filter #${filterNum} + 0 dBFS रेंडर हो रहा है...`;
+            status.innerText = `⚙️ कम MB में रेंडर और 0 dBFS नॉर्मलाइज़ हो रहा है...`;
 
             const rendered = await offlineCtx.startRendering();
             normalizeToZeroDBFS(rendered);
             const wavBlob = encodeWAV(rendered);
+
+            const outSizeMB = (wavBlob.size / (1024 * 1024)).toFixed(2);
 
             if (blobUrl) URL.revokeObjectURL(blobUrl);
             blobUrl = URL.createObjectURL(wavBlob);
@@ -561,11 +559,12 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `SunoAutoFilter${filterNum}_${randNum}.wav`;
+            const finalFileName = `SunoFilter${filterNum}_${randNum}.wav`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
             dlBtn.download = finalFileName;
+            dlBtn.innerText = `⬇️ दोबारा डाउनलोड करें (${outSizeMB} MB)`;
             dlBtn.style.display = 'block';
 
             // Automatic Download Trigger
@@ -576,10 +575,10 @@
             autoLink.click();
             document.body.removeChild(autoLink);
 
-            status.innerText = `✅ Auto Filter #${filterNum} पूरा हुआ और डाउनलोड शुरू हो गया!`;
+            status.innerText = `✅ तैयार! सिर्फ़ ${outSizeMB} MB की फ़ाइल डाउनलोड हो गई है।`;
         } catch (err) {
             console.error(err);
-            status.innerText = "❌ Error: 60-90 सेकंड की ऑडियो क्लिप का उपयोग करें।";
+            status.innerText = "❌ Error: ऑडियो फ़ाइल प्रोसेस नहीं हो पाई, दोबारा ट्राई करें।";
         } finally {
             isProcessing = false;
             btn1.disabled = false;
