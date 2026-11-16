@@ -332,7 +332,7 @@
 <div class="app-box">
     <div class="header">
         <h1>SUNO AI MASTER AUTO-STUDIO</h1>
-        <p>|> CRISP AUTO FILTER #1 & #2 • LOW MB FAST EXPORT</p>
+        <p>|> FULL TRACK (UP TO 8 MIN) • ~8-10MB EXPORT</p>
     </div>
 
     <!-- Gemini API Key -->
@@ -347,33 +347,33 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE & LYRICS</button>
     </div>
 
-    <!-- TAB 1: CRISP BALANCED AUDIO FILTER & LOW-MB DOWNLOAD -->
+    <!-- TAB 1: FULL SONG AUDIO FILTER & ~10MB AUTO DOWNLOAD -->
     <div id="audioSection" class="section-view active">
         
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
             <div class="upload-left">
                 <div class="upload-icon">🎵</div>
                 <div class="upload-details">
-                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
-                    <div class="upload-sub" id="fileSub">MP3, WAV, M4A, AAC • Low MB Output</div>
+                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Full Song)</div>
+                    <div class="upload-sub" id="fileSub">Up to 8 Mins • Output ~8-10 MB</div>
                 </div>
             </div>
             <div class="browse-pill">SELECT</div>
         </div>
         <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
 
-        <span class="filter-title">नीचे किसी भी फ़िल्टर पर टच करें — साफ़ आवाज़ और कम MB में डाउनलोड होगा:</span>
+        <span class="filter-title">किसी भी फ़िल्टर पर टच करें — पूरा गाना (~8-10 MB) डाउनलोड होगा:</span>
         
         <div class="dual-filter-grid">
             <!-- One-Tap Auto Filter 1: Natural Clean -->
             <button class="auto-filter-btn" id="btnFilter1" onclick="runAutoPipeline(1)" disabled>
                 <span class="f-badge">FILTER #1 • NATURAL</span>
                 <span class="f-name">AUTO FILTER #1</span>
-                <span class="f-desc">Original Crisp Voice + 1.025x + Smooth Sweep</span>
+                <span class="f-desc">Clean Vocal + 1.025x + Smooth Sweep</span>
                 <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
             </button>
 
-            <!-- One-Tap Auto Filter 2: Crisp Bright Shift (No Old Voice!) -->
+            <!-- One-Tap Auto Filter 2: Crisp Bright Shift -->
             <button class="auto-filter-btn" id="btnFilter2" onclick="runAutoPipeline(2)" disabled>
                 <span class="f-badge">FILTER #2 • BRIGHT PRO</span>
                 <span class="f-name">AUTO FILTER #2</span>
@@ -453,7 +453,7 @@
         }
     });
 
-    // --- CRISP BALANCED AUDIO PIPELINE + 22.05kHz LOW-MB EXPORT ---
+    // --- FULL SONG ENGINE (UP TO 8 MINS) WITH ~10MB AUTO-SCALING ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -467,7 +467,7 @@
         btn1.classList.toggle('active-run', filterNum === 1);
         btn2.classList.toggle('active-run', filterNum === 2);
 
-        status.innerText = `⏳ Auto Filter #${filterNum} प्रोसेस हो रहा है...`;
+        status.innerText = `⏳ पूरा गाना Auto Filter #${filterNum} से प्रोसेस हो रहा है...`;
 
         await new Promise(r => setTimeout(r, 80));
 
@@ -479,21 +479,24 @@
             if (tempCtx.close) await tempCtx.close();
 
             const isFilter1 = (filterNum === 1);
-            
-            // Filter #1: Natural Clean (1.025x + +18 cents subtle lift)
-            // Filter #2: Bright Studio Bypass (1.045x + +38 cents crisp tone, zero muffled/old voice!)
             const rate = isFilter1 ? 1.025 : 1.045;
             const detuneCents = isFilter1 ? 18 : 38;
 
-            // 22050 Hz Mono OfflineAudioContext cuts output file size by ~85% (65MB -> ~7MB) while keeping vocals super clear
-            const targetSampleRate = 22050;
-            const durationSec = audioBuf.duration / rate;
-            const outLength = Math.floor(durationSec * targetSampleRate);
+            // Support full song up to 8 minutes (480 seconds)
+            const maxAllowedSec = 480;
+            const effectiveDuration = Math.min(audioBuf.duration, maxAllowedSec);
+            const outDurationSec = effectiveDuration / rate;
+
+            // Dynamically compute sample rate so even a 5 to 8 minute full song stays right around ~9.5 MB
+            const targetMaxBytes = 9.8 * 1024 * 1024;
+            const computedRate = Math.floor((targetMaxBytes / 2) / outDurationSec);
+            const finalSampleRate = Math.min(22050, Math.max(11025, computedRate));
+            const outLength = Math.floor(outDurationSec * finalSampleRate);
 
             const offlineCtx = new OfflineAudioContext(
-                1, // Mono channel for compact upload size & clean vocal focus
+                1, // Mono channel keeps full 5-8 min track around ~9-10 MB
                 outLength,
-                targetSampleRate
+                finalSampleRate
             );
 
             const source = offlineCtx.createBufferSource();
@@ -501,7 +504,7 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // Stage 1: Smooth Volcano Dynamic Sweep (Alters frequency fingerprint without distorting voice)
+            // Stage 1: Smooth Volcano Dynamic Sweep
             const volcanoFilter = offlineCtx.createBiquadFilter();
             volcanoFilter.type = "peaking";
             volcanoFilter.frequency.value = isFilter1 ? 1300 : 1550;
@@ -517,10 +520,10 @@
             lfoGain.connect(volcanoFilter.frequency);
             lfo.start(0);
 
-            // Stage 2: Crisp Air & Vocal Clarity Boost (Prevents dull/old sound)
+            // Stage 2: Crisp Vocal Clarity Boost
             const clarityFilter = offlineCtx.createBiquadFilter();
             clarityFilter.type = "highshelf";
-            clarityFilter.frequency.value = 3200;
+            clarityFilter.frequency.value = 3000;
             clarityFilter.gain.value = isFilter1 ? 1.5 : 3.0;
 
             // Stage 3: Micro Phase Offset
@@ -542,8 +545,8 @@
             clarityFilter.connect(phaseDelay);
             phaseDelay.connect(offlineCtx.destination);
 
-            source.start(0);
-            status.innerText = `⚙️ कम MB में रेंडर और 0 dBFS नॉर्मलाइज़ हो रहा है...`;
+            source.start(0, 0, effectiveDuration);
+            status.innerText = `⚙️ पूरा ट्रैक (~10MB) रेंडर हो रहा है...`;
 
             const rendered = await offlineCtx.startRendering();
             normalizeToZeroDBFS(rendered);
@@ -559,7 +562,7 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `SunoFilter${filterNum}_${randNum}.wav`;
+            const finalFileName = `SunoFullTrack_F${filterNum}_${randNum}.wav`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
@@ -575,7 +578,7 @@
             autoLink.click();
             document.body.removeChild(autoLink);
 
-            status.innerText = `✅ तैयार! सिर्फ़ ${outSizeMB} MB की फ़ाइल डाउनलोड हो गई है।`;
+            status.innerText = `✅ पूरा गाना तैयार! सिर्फ़ ${outSizeMB} MB की फ़ाइल डाउनलोड हो गई है।`;
         } catch (err) {
             console.error(err);
             status.innerText = "❌ Error: ऑडियो फ़ाइल प्रोसेस नहीं हो पाई, दोबारा ट्राई करें।";
