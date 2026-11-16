@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MANOJ MUSIC STUDIO</title>
-    <!-- Pure Client-Side 128kbps MP3 Encoder -->
-    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+    <!-- Full lamejs bundle (Fixes MPEGMode freeze bug for fast 128kbps MP3) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -67,7 +67,7 @@
             z-index: 1;
             width: 100%;
             max-width: 480px;
-            background: rgba(255, 255, 255, 0.94);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border: 2px solid #ff1493;
             box-shadow: 0 0 25px rgba(255, 20, 147, 0.28), inset 0 0 12px rgba(255, 105, 180, 0.15);
@@ -212,7 +212,7 @@
         .section-view { display: none; }
         .section-view.active { display: block; }
 
-        /* Modern Upload Bar */
+        /* Modern Upload / Change Audio Bar */
         .modern-upload {
             display: flex;
             align-items: center;
@@ -264,13 +264,13 @@
             color: #fff;
             font-size: 11px;
             font-weight: 800;
-            padding: 8px 13px;
+            padding: 8px 12px;
             border-radius: 8px;
             flex-shrink: 0;
             box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
         }
 
-        /* Auto Filter Cards */
+        /* FL Studio Filter Selection Cards */
         .filter-title {
             font-size: 12px;
             color: #9d174d;
@@ -283,13 +283,13 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
-        .auto-filter-btn {
+        .filter-card {
             background: #ffffff;
-            border: 1.5px solid #ff69b4;
+            border: 1.5px solid #ffb6d9;
             border-radius: 13px;
-            padding: 14px 10px;
+            padding: 12px 9px;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
@@ -298,30 +298,26 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.1);
         }
-        .auto-filter-btn:active { transform: scale(0.97); }
-        .auto-filter-btn.active-run {
+        .filter-card.selected {
             background: #fff0f7;
-            border-color: #ff1493;
-            box-shadow: 0 0 18px rgba(255, 20, 147, 0.45);
+            border: 2px solid #ff1493;
+            box-shadow: 0 0 16px rgba(255, 20, 147, 0.35);
         }
-        .auto-filter-btn:disabled { opacity: 0.45; cursor: not-allowed; }
         .f-badge {
             display: inline-block;
-            font-size: 9.5px;
+            font-size: 9px;
             font-weight: 800;
-            padding: 3px 8px;
+            padding: 3px 7px;
             border-radius: 5px;
             background: #ffe4f1;
             color: #be185d;
             margin-bottom: 6px;
             font-family: monospace;
         }
-        .auto-filter-btn.active-run .f-badge { background: #ff1493; color: #ffffff; }
-        .f-name { font-size: 13.5px; font-weight: 900; color: #831843; display: block; }
+        .filter-card.selected .f-badge { background: #ff1493; color: #ffffff; }
+        .f-name { font-size: 13px; font-weight: 900; color: #831843; display: block; }
         .f-desc { font-size: 10.5px; color: #6b7280; font-weight: 600; display: block; margin-top: 4px; line-height: 1.35; }
-        .f-tap-hint { margin-top: 8px; font-size: 10px; font-weight: 800; color: #ff1493; font-family: monospace; }
 
         /* Textareas */
         .field-label {
@@ -345,7 +341,6 @@
             outline: none;
             margin-bottom: 12px;
             font-family: monospace;
-            box-shadow: inset 0 2px 6px rgba(255, 20, 147, 0.06);
         }
         textarea:focus { border-color: #ff1493; box-shadow: 0 0 10px rgba(255, 20, 147, 0.25); }
         .style-box { height: 62px; border-color: #ec4899; color: #831843; font-size: 12px; }
@@ -364,6 +359,11 @@
             text-decoration: none;
             margin-bottom: 10px;
             letter-spacing: 0.4px;
+        }
+        .btn-convert {
+            background: linear-gradient(90deg, #ff1493, #d946ef);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(255, 20, 147, 0.4);
         }
         .btn-ai {
             background: linear-gradient(90deg, #ec4899, #f43f5e);
@@ -392,6 +392,19 @@
             font-weight: 800;
         }
         audio { width: 100%; margin-top: 6px; margin-bottom: 10px; display: none; border-radius: 8px; }
+
+        /* Suno Workflow Reminder Box */
+        .suno-guide {
+            background: #fff0f7;
+            border: 1px solid #ff85c0;
+            border-radius: 10px;
+            padding: 9px 11px;
+            font-size: 11px;
+            color: #831843;
+            line-height: 1.45;
+            margin-top: 6px;
+        }
+        .suno-guide b { color: #ff1493; }
     </style>
 </head>
 <body>
@@ -410,7 +423,7 @@
 <div class="app-box">
     <div class="header">
         <div class="hacker-logo" data-text="MANOJ MUSIC STUDIO">MANOJ MUSIC STUDIO</div>
-        <p>[SYSTEM_ACTIVE] |> 128KBPS MP3 &amp; GEMINI 3.8 ENGINE<span class="cursor-blink">_</span></p>
+        <p>[SYSTEM_ACTIVE] |> FL STUDIO DSP &amp; SUNO BYPASS ENGINE<span class="cursor-blink">_</span></p>
     </div>
 
     <!-- Gemini API Key -->
@@ -425,9 +438,10 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE &amp; LYRICS</button>
     </div>
 
-    <!-- TAB 1: 128KBPS MP3 BYPASS & GEMINI 3.8 AUTO-DETECT -->
+    <!-- TAB 1: FL STUDIO DSP + 128KBPS MP3 + CHANGE AUDIO -->
     <div id="audioSection" class="section-view active">
         
+        <!-- Upload / Change Audio Box -->
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
             <div class="upload-left">
                 <div class="upload-icon">🎵</div>
@@ -436,36 +450,41 @@
                     <div class="upload-sub" id="fileSub">Output: 128kbps MP3 (~1 MB / Min)</div>
                 </div>
             </div>
-            <div class="browse-pill">SELECT</div>
+            <div class="browse-pill" id="changeAudioBtn">SELECT</div>
         </div>
         <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
 
-        <span class="filter-title">128kbps MP3 फ़िल्टर चुनें (~1 MB प्रति मिनट साइज):</span>
+        <span class="filter-title">FL Studio कॉपीराइट फ़िल्टर चुनें (टच करते ही कन्वर्ट होगा):</span>
         
         <div class="dual-filter-grid">
-            <!-- Filter 1 -->
-            <button class="auto-filter-btn" id="btnFilter1" onclick="runAutoPipeline(1)" disabled>
-                <span class="f-badge">FILTER #1 • 128KBPS MP3</span>
-                <span class="f-name">AUTO FILTER #1</span>
-                <span class="f-desc">1.085x Pitch + Allpass Sweep + Vocal Focus</span>
-                <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
-            </button>
+            <!-- Filter 1: FL Love Philter + Freq Shifter + Room Ambience -->
+            <div class="filter-card selected" id="cardFilter1" onclick="selectAndRunFilter(1)">
+                <span class="f-badge">FL PRESET #1 • CLEAN</span>
+                <span class="f-name">SUNO FILTER #1</span>
+                <span class="f-desc">Love Philter Sweep + Freq Shift + Room Ambience</span>
+            </div>
 
-            <!-- Filter 2 -->
-            <button class="auto-filter-btn" id="btnFilter2" onclick="runAutoPipeline(2)" disabled>
-                <span class="f-badge">FILTER #2 • 128KBPS MP3</span>
-                <span class="f-name">AUTO FILTER #2</span>
-                <span class="f-desc">0.905x + Formant Shift + Beat-Grid Jitter</span>
-                <span class="f-tap-hint">⚡ TAP TO AUTO-DOWNLOAD</span>
-            </button>
+            <!-- Filter 2: Deep Allpass + Formant + Beat Jitter -->
+            <div class="filter-card" id="cardFilter2" onclick="selectAndRunFilter(2)">
+                <span class="f-badge">FL PRESET #2 • DEEP</span>
+                <span class="f-name">SUNO FILTER #2</span>
+                <span class="f-desc">Allpass Phase + Formant Shift + Beat-Grid Jitter</span>
+            </div>
         </div>
 
-        <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>⚡ FAST AUTO-DETECT STYLE &amp; LYRICS</button>
+        <!-- Dedicated Convert & Download Action Button -->
+        <button class="btn btn-convert" id="convertBtn" onclick="runAutoPipeline(selectedFilter)" disabled>⚡ CHANGE AUDIO &amp; DOWNLOAD (FILTER #1)</button>
+
+        <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 FAST AUTO-DETECT STYLE &amp; LYRICS</button>
 
         <div class="status-msg" id="statusBox">पहले ऊपर से अपना गाना सेलेक्ट करें</div>
 
         <audio id="player" controls playsinline></audio>
         <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.MP3)</a>
+
+        <div class="suno-guide">
+            💡 <b>Suno AI अपलोड गाइड:</b> फ़ाइल अपलोड करने के बाद Suno में <b>Full Song + Vocal</b> चुनें। YouTube कॉपीराइट से बचने के लिए <b>अपना खुद का Style Prompt</b> डालें और लिरिक्स में 1–2 शब्द हल्के बदल दें।
+        </div>
     </div>
 
     <!-- TAB 2: JP DIGITAL STYLE HEAVY LYRICS BYPASS -->
@@ -487,6 +506,7 @@
 </div>
 
 <script>
+    let selectedFilter = 1;
     let currentFile = null;
     let decodedCache = null;
     let blobUrl = null;
@@ -513,6 +533,16 @@
         document.getElementById('tabLyricsBtn').classList.toggle('active', tab === 'lyrics');
     }
 
+    function selectAndRunFilter(num) {
+        selectedFilter = num;
+        document.getElementById('cardFilter1').classList.toggle('selected', num === 1);
+        document.getElementById('cardFilter2').classList.toggle('selected', num === 2);
+        document.getElementById('convertBtn').innerText = `⚡ CHANGE AUDIO & DOWNLOAD (FILTER #${num})`;
+        if (currentFile) {
+            runAutoPipeline(num);
+        }
+    }
+
     document.getElementById('audioInput').addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             currentFile = e.target.files[0];
@@ -520,16 +550,14 @@
             const sizeMB = (currentFile.size / (1024 * 1024)).toFixed(2);
             document.getElementById('fileTitle').innerText = currentFile.name;
             document.getElementById('fileSub').innerText = `Ready • ${sizeMB} MB`;
+            document.getElementById('changeAudioBtn').innerText = "🔄 CHANGE";
             
-            document.getElementById('btnFilter1').disabled = false;
-            document.getElementById('btnFilter2').disabled = false;
+            document.getElementById('convertBtn').disabled = false;
             document.getElementById('detectBtn').disabled = false;
             
-            document.getElementById('btnFilter1').classList.remove('active-run');
-            document.getElementById('btnFilter2').classList.remove('active-run');
             document.getElementById('dlBtn').style.display = 'none';
             document.getElementById('player').style.display = 'none';
-            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! Filter #1, #2 या Fast Auto-Detect चुनें।";
+            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! 'CHANGE AUDIO' बटन या फ़िल्टर पर टच करें।";
         }
     });
 
@@ -543,21 +571,16 @@
         return decodedCache;
     }
 
-    // --- 128KBPS MP3 ENGINE (~1 MB PER MINUTE) ---
+    // --- FL STUDIO STOCK DSP REPLICA + 128KBPS MP3 ENGINE ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
         isProcessing = true;
-        const btn1 = document.getElementById('btnFilter1');
-        const btn2 = document.getElementById('btnFilter2');
+        const convertBtn = document.getElementById('convertBtn');
         const status = document.getElementById('statusBox');
+        convertBtn.disabled = true;
 
-        btn1.disabled = true;
-        btn2.disabled = true;
-        btn1.classList.toggle('active-run', filterNum === 1);
-        btn2.classList.toggle('active-run', filterNum === 2);
-
-        status.innerText = `⏳ Filter #${filterNum} से ऑडियो प्रोसेस हो रहा है...`;
+        status.innerText = `⏳ FL Studio Filter #${filterNum} अप्लाई हो रहा है...`;
         await new Promise(r => setTimeout(r, 60));
 
         try {
@@ -565,10 +588,12 @@
             const processedSourceBuf = applyMicroJitterAndVocalFocus(rawAudioBuf, filterNum);
 
             const isFilter1 = (filterNum === 1);
-            const rate = isFilter1 ? 1.085 : 0.905;
-            const detuneCents = isFilter1 ? 65 : -135;
+            // Filter #1: Clean Love Philter + Frequency Shifter (+55 cents, 1.055x)
+            // Filter #2: Deep Anti-Detect (0.925x, -115 cents)
+            const rate = isFilter1 ? 1.055 : 0.925;
+            const detuneCents = isFilter1 ? 55 : -115;
 
-            const maxAllowedSec = 480;
+            const maxAllowedSec = 480; // Up to 8 mins
             const effectiveDuration = Math.min(processedSourceBuf.duration, maxAllowedSec);
             const outDurationSec = effectiveDuration / rate;
 
@@ -582,54 +607,73 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            const allpass1 = offlineCtx.createBiquadFilter();
-            allpass1.type = "allpass";
-            allpass1.frequency.value = isFilter1 ? 620 : 480;
-            allpass1.Q.value = 3.5;
-
-            const allpass2 = offlineCtx.createBiquadFilter();
-            allpass2.type = "allpass";
-            allpass2.frequency.value = isFilter1 ? 2100 : 1750;
-            allpass2.Q.value = 4.0;
-
-            const dynamicPeak = offlineCtx.createBiquadFilter();
-            dynamicPeak.type = "peaking";
-            dynamicPeak.frequency.value = isFilter1 ? 1400 : 1150;
-            dynamicPeak.Q.value = isFilter1 ? 2.2 : 3.0;
-            dynamicPeak.gain.value = isFilter1 ? 4.5 : 6.0;
+            // 1. Fruity Love Philter Style LFO Sweep
+            const lovePhilter = offlineCtx.createBiquadFilter();
+            lovePhilter.type = "peaking";
+            lovePhilter.frequency.value = isFilter1 ? 1350 : 1100;
+            lovePhilter.Q.value = isFilter1 ? 2.0 : 2.8;
+            lovePhilter.gain.value = isFilter1 ? 4.2 : 5.5;
 
             const lfo = offlineCtx.createOscillator();
             const lfoGain = offlineCtx.createGain();
-            lfo.type = "triangle";
-            lfo.frequency.value = isFilter1 ? 0.65 : 1.15;
-            lfoGain.gain.value = isFilter1 ? 650 : 950;
+            lfo.type = "sine";
+            lfo.frequency.value = isFilter1 ? 0.55 : 0.95;
+            lfoGain.gain.value = isFilter1 ? 580 : 850;
             lfo.connect(lfoGain);
-            lfoGain.connect(dynamicPeak.frequency);
+            lfoGain.connect(lovePhilter.frequency);
             lfo.start(0);
 
+            // 2. Dual Allpass Phase Dispersers (Scrambles spectral fingerprint)
+            const allpass1 = offlineCtx.createBiquadFilter();
+            allpass1.type = "allpass";
+            allpass1.frequency.value = isFilter1 ? 650 : 490;
+            allpass1.Q.value = 3.2;
+
+            const allpass2 = offlineCtx.createBiquadFilter();
+            allpass2.type = "allpass";
+            allpass2.frequency.value = isFilter1 ? 2200 : 1800;
+            allpass2.Q.value = 3.8;
+
+            // 3. Subtle Fruity Reverb 2 Room Ambience (6% wet micro-reflection)
+            const dryGain = offlineCtx.createGain();
+            dryGain.gain.value = 0.94;
+            const wetGain = offlineCtx.createGain();
+            wetGain.gain.value = isFilter1 ? 0.06 : 0.09;
+            const roomDelay = offlineCtx.createDelay();
+            roomDelay.delayTime.value = isFilter1 ? 0.024 : 0.032;
+
+            // 4. Vocal Presence Clarity Boost
             const vocalBoost = offlineCtx.createBiquadFilter();
             vocalBoost.type = "peaking";
             vocalBoost.frequency.value = 2850;
             vocalBoost.Q.value = 1.4;
-            vocalBoost.gain.value = 3.2;
+            vocalBoost.gain.value = 3.0;
 
+            // 5. Harmonic Waveshaper
             const shaper = offlineCtx.createWaveShaper();
-            shaper.curve = makeSoftCurve(isFilter1 ? 8 : 16);
+            shaper.curve = makeSoftCurve(isFilter1 ? 6 : 14);
 
+            // Connect DSP Chain
             source.connect(allpass1);
             allpass1.connect(allpass2);
-            allpass2.connect(dynamicPeak);
-            dynamicPeak.connect(vocalBoost);
+            allpass2.connect(lovePhilter);
+            lovePhilter.connect(vocalBoost);
             vocalBoost.connect(shaper);
-            shaper.connect(offlineCtx.destination);
+
+            shaper.connect(dryGain);
+            shaper.connect(roomDelay);
+            roomDelay.connect(wetGain);
+
+            dryGain.connect(offlineCtx.destination);
+            wetGain.connect(offlineCtx.destination);
 
             source.start(0, 0, effectiveDuration);
-            status.innerText = `⚙️ 128kbps MP3 में कन्वर्ट हो रहा है...`;
+            status.innerText = `⚙️ 128kbps MP3 तैयार हो रहा है...`;
 
             const rendered = await offlineCtx.startRendering();
             normalizeToZeroDBFS(rendered);
 
-            const mp3Blob = await encodeToMP3(rendered, 128);
+            const mp3Blob = await encodeToMP3Safe(rendered, 128);
             const outSizeMB = (mp3Blob.size / (1024 * 1024)).toFixed(2);
 
             if (blobUrl) URL.revokeObjectURL(blobUrl);
@@ -640,7 +684,7 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `ManojStudio_F${filterNum}_${randNum}.mp3`;
+            const finalFileName = `ManojStudio_FL${filterNum}_${randNum}.mp3`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
@@ -658,17 +702,16 @@
             status.innerText = `✅ तैयार! ${outSizeMB} MB की 128kbps MP3 फ़ाइल डाउनलोड हो गई।`;
         } catch (err) {
             console.error(err);
-            status.innerText = "❌ Error: MP3 एन्कोडिंग में समस्या आई, पेज रिफ़्रेश करें।";
+            status.innerText = "❌ Error: " + (err.message || "दोबारा ट्राई करें।");
         } finally {
             isProcessing = false;
-            btn1.disabled = false;
-            btn2.disabled = false;
+            convertBtn.disabled = false;
         }
     }
 
-    async function encodeToMP3(audioBuffer, kbps) {
+    async function encodeToMP3Safe(audioBuffer, kbps) {
         if (typeof lamejs === 'undefined') {
-            throw new Error("MP3 Library loading, internet check karein...");
+            throw new Error("MP3 Encoder लोड नहीं हुआ, इंटरनेट चेक करके पेज रिफ़्रेश करें।");
         }
         const sampleRate = audioBuffer.sampleRate;
         const floatSamples = audioBuffer.getChannelData(0);
@@ -682,23 +725,27 @@
 
         const mp3encoder = new lamejs.Mp3Encoder(1, sampleRate, kbps);
         const mp3Data = [];
-        const chunkSize = 1152 * 40;
+        const sampleBlockSize = 1152;
 
-        for (let i = 0; i < len; i += chunkSize) {
-            const chunk = int16Samples.subarray(i, i + chunkSize);
-            const mp3buf = mp3encoder.encodeBuffer(chunk);
-            if (mp3buf.length > 0) mp3Data.push(mp3buf);
-            if (i % (chunkSize * 4) === 0) {
+        for (let i = 0; i < len; i += sampleBlockSize) {
+            const sampleChunk = int16Samples.subarray(i, i + sampleBlockSize);
+            const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+            if (mp3buf.length > 0) {
+                mp3Data.push(mp3buf);
+            }
+            if (i % (sampleBlockSize * 150) === 0) {
                 await new Promise(r => setTimeout(r, 0));
             }
         }
         const endBuf = mp3encoder.flush();
-        if (endBuf.length > 0) mp3Data.push(endBuf);
+        if (endBuf.length > 0) {
+            mp3Data.push(endBuf);
+        }
 
         return new Blob(mp3Data, { type: 'audio/mp3' });
     }
 
-    // --- ULTRA-FAST AUTO DETECT USING GEMINI 3.8 FLASH ---
+    // --- FAST AUTO DETECT USING GEMINI 3.8 FLASH ---
     async function autoDetectSong() {
         if (!currentFile) return;
 
@@ -716,7 +763,6 @@
         try {
             const rawAudioBuf = await getDecodedAudio();
             
-            // Compress to tiny 16kHz 32kbps MP3 (~240KB/min) for 3-5 second upload & transcription
             const fastCtx = new OfflineAudioContext(1, Math.floor(rawAudioBuf.duration * 16000), 16000);
             const src = fastCtx.createBufferSource();
             src.buffer = rawAudioBuf;
@@ -724,7 +770,7 @@
             src.start(0);
             const smallBuf = await fastCtx.startRendering();
             
-            const tinyMp3Blob = await encodeToMP3(smallBuf, 32);
+            const tinyMp3Blob = await encodeToMP3Safe(smallBuf, 32);
             const base64Audio = await blobToBase64(tinyMp3Blob);
 
             status.innerText = "🤖 Gemini 3.8 Flash स्टाइल और लिरिक्स निकाल रहा है...";
@@ -838,6 +884,7 @@ Return strictly raw JSON without markdown.`;
         }
     }
 
+    // --- JP DIGITAL STYLE HEAVY LYRICS BYPASS ---
     function generateBypass() {
         const input = document.getElementById('inputLyrics').value;
         if (!input.trim()) return;
