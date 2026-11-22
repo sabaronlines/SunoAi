@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MANOJ MUSIC STUDIO</title>
-    <!-- Full lamejs bundle (Fixes MPEGMode freeze bug for fast 128kbps MP3) -->
+    <!-- Full lamejs bundle for fast, Suno-compatible Stereo MP3 encoding -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
     <style>
         * {
@@ -26,7 +26,7 @@
             position: relative;
         }
 
-        /* Floating Music Notes Background Animation */
+        /* Floating Music Notes Background */
         .music-bg {
             position: fixed;
             top: 0;
@@ -61,7 +61,7 @@
             100% { transform: translateY(-108vh) rotate(360deg) scale(1.25); opacity: 0; }
         }
 
-        /* Main Studio Glass Card (White Pink Neon) */
+        /* Main Studio Glass Card */
         .app-box {
             position: relative;
             z-index: 1;
@@ -76,7 +76,7 @@
             margin-top: 6px;
         }
 
-        /* Hacker Style Glitch Logo Animation */
+        /* Hacker Style Glitch Logo */
         .header {
             text-align: center;
             margin-bottom: 14px;
@@ -270,7 +270,7 @@
             box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
         }
 
-        /* FL Studio Filter Selection Cards */
+        /* Filter Cards */
         .filter-title {
             font-size: 12px;
             color: #9d174d;
@@ -392,19 +392,6 @@
             font-weight: 800;
         }
         audio { width: 100%; margin-top: 6px; margin-bottom: 10px; display: none; border-radius: 8px; }
-
-        /* Suno Workflow Reminder Box */
-        .suno-guide {
-            background: #fff0f7;
-            border: 1px solid #ff85c0;
-            border-radius: 10px;
-            padding: 9px 11px;
-            font-size: 11px;
-            color: #831843;
-            line-height: 1.45;
-            margin-top: 6px;
-        }
-        .suno-guide b { color: #ff1493; }
     </style>
 </head>
 <body>
@@ -423,7 +410,7 @@
 <div class="app-box">
     <div class="header">
         <div class="hacker-logo" data-text="MANOJ MUSIC STUDIO">MANOJ MUSIC STUDIO</div>
-        <p>[SYSTEM_ACTIVE] |> FL STUDIO DSP &amp; SUNO BYPASS ENGINE<span class="cursor-blink">_</span></p>
+        <p>[SYSTEM_ACTIVE] |> SUNO FAST-UPLOAD STEREO MP3 ENGINE<span class="cursor-blink">_</span></p>
     </div>
 
     <!-- Gemini API Key -->
@@ -438,7 +425,7 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE &amp; LYRICS</button>
     </div>
 
-    <!-- TAB 1: FL STUDIO DSP + 128KBPS MP3 + CHANGE AUDIO -->
+    <!-- TAB 1: STANDALONE SUNO-COMPATIBLE MP3 BYPASS -->
     <div id="audioSection" class="section-view active">
         
         <!-- Upload / Change Audio Box -->
@@ -446,33 +433,33 @@
             <div class="upload-left">
                 <div class="upload-icon">🎵</div>
                 <div class="upload-details">
-                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Full Song)</div>
-                    <div class="upload-sub" id="fileSub">Output: 128kbps MP3 (~1 MB / Min)</div>
+                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
+                    <div class="upload-sub" id="fileSub">Fast-Upload Stereo MP3 (~0.7 MB / Min)</div>
                 </div>
             </div>
             <div class="browse-pill" id="changeAudioBtn">SELECT</div>
         </div>
         <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
 
-        <span class="filter-title">FL Studio कॉपीराइट फ़िल्टर चुनें (टच करते ही कन्वर्ट होगा):</span>
+        <span class="filter-title">फ़िल्टर चुनें (टच करते ही कन्वर्ट और डाउनलोड होगा):</span>
         
         <div class="dual-filter-grid">
-            <!-- Filter 1: FL Love Philter + Freq Shifter + Room Ambience -->
+            <!-- Filter 1 -->
             <div class="filter-card selected" id="cardFilter1" onclick="selectAndRunFilter(1)">
-                <span class="f-badge">FL PRESET #1 • CLEAN</span>
+                <span class="f-badge">FILTER #1 • FAST UPLOAD</span>
                 <span class="f-name">SUNO FILTER #1</span>
-                <span class="f-desc">Love Philter Sweep + Freq Shift + Room Ambience</span>
+                <span class="f-desc">Love Philter + Freq Shift + Stereo MP3</span>
             </div>
 
-            <!-- Filter 2: Deep Allpass + Formant + Beat Jitter -->
+            <!-- Filter 2 -->
             <div class="filter-card" id="cardFilter2" onclick="selectAndRunFilter(2)">
-                <span class="f-badge">FL PRESET #2 • DEEP</span>
+                <span class="f-badge">FILTER #2 • MAX SHIELD</span>
                 <span class="f-name">SUNO FILTER #2</span>
-                <span class="f-desc">Allpass Phase + Formant Shift + Beat-Grid Jitter</span>
+                <span class="f-desc">Allpass Phase + Formant + Beat-Grid Jitter</span>
             </div>
         </div>
 
-        <!-- Dedicated Convert & Download Action Button -->
+        <!-- Dedicated Audio Change / Convert Button -->
         <button class="btn btn-convert" id="convertBtn" onclick="runAutoPipeline(selectedFilter)" disabled>⚡ CHANGE AUDIO &amp; DOWNLOAD (FILTER #1)</button>
 
         <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 FAST AUTO-DETECT STYLE &amp; LYRICS</button>
@@ -481,10 +468,6 @@
 
         <audio id="player" controls playsinline></audio>
         <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.MP3)</a>
-
-        <div class="suno-guide">
-            💡 <b>Suno AI अपलोड गाइड:</b> फ़ाइल अपलोड करने के बाद Suno में <b>Full Song + Vocal</b> चुनें। YouTube कॉपीराइट से बचने के लिए <b>अपना खुद का Style Prompt</b> डालें और लिरिक्स में 1–2 शब्द हल्के बदल दें।
-        </div>
     </div>
 
     <!-- TAB 2: JP DIGITAL STYLE HEAVY LYRICS BYPASS -->
@@ -557,7 +540,7 @@
             
             document.getElementById('dlBtn').style.display = 'none';
             document.getElementById('player').style.display = 'none';
-            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! 'CHANGE AUDIO' बटन या फ़िल्टर पर टच करें।";
+            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! Filter #1 या #2 पर टच करें।";
         }
     });
 
@@ -571,7 +554,7 @@
         return decodedCache;
     }
 
-    // --- FL STUDIO STOCK DSP REPLICA + 128KBPS MP3 ENGINE ---
+    // --- SUNO FAST-UPLOAD STEREO MP3 ENGINE (Fixes 30s Stall Error) ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -580,7 +563,7 @@
         const status = document.getElementById('statusBox');
         convertBtn.disabled = true;
 
-        status.innerText = `⏳ FL Studio Filter #${filterNum} अप्लाई हो रहा है...`;
+        status.innerText = `⏳ Suno Filter #${filterNum} प्रोसेस हो रहा है...`;
         await new Promise(r => setTimeout(r, 60));
 
         try {
@@ -588,8 +571,6 @@
             const processedSourceBuf = applyMicroJitterAndVocalFocus(rawAudioBuf, filterNum);
 
             const isFilter1 = (filterNum === 1);
-            // Filter #1: Clean Love Philter + Frequency Shifter (+55 cents, 1.055x)
-            // Filter #2: Deep Anti-Detect (0.925x, -115 cents)
             const rate = isFilter1 ? 1.055 : 0.925;
             const detuneCents = isFilter1 ? 55 : -115;
 
@@ -597,17 +578,17 @@
             const effectiveDuration = Math.min(processedSourceBuf.duration, maxAllowedSec);
             const outDurationSec = effectiveDuration / rate;
 
+            // 44.1kHz Stereo encoded at 96kbps MP3 = Standard Suno-compatible MP3 (~0.7 MB/min, uploads in <4s!)
             const sampleRate = 44100;
             const outLength = Math.floor(outDurationSec * sampleRate);
 
-            const offlineCtx = new OfflineAudioContext(1, outLength, sampleRate);
+            const offlineCtx = new OfflineAudioContext(2, outLength, sampleRate);
 
             const source = offlineCtx.createBufferSource();
             source.buffer = processedSourceBuf;
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // 1. Fruity Love Philter Style LFO Sweep
             const lovePhilter = offlineCtx.createBiquadFilter();
             lovePhilter.type = "peaking";
             lovePhilter.frequency.value = isFilter1 ? 1350 : 1100;
@@ -623,7 +604,6 @@
             lfoGain.connect(lovePhilter.frequency);
             lfo.start(0);
 
-            // 2. Dual Allpass Phase Dispersers (Scrambles spectral fingerprint)
             const allpass1 = offlineCtx.createBiquadFilter();
             allpass1.type = "allpass";
             allpass1.frequency.value = isFilter1 ? 650 : 490;
@@ -634,46 +614,41 @@
             allpass2.frequency.value = isFilter1 ? 2200 : 1800;
             allpass2.Q.value = 3.8;
 
-            // 3. Subtle Fruity Reverb 2 Room Ambience (6% wet micro-reflection)
-            const dryGain = offlineCtx.createGain();
-            dryGain.gain.value = 0.94;
-            const wetGain = offlineCtx.createGain();
-            wetGain.gain.value = isFilter1 ? 0.06 : 0.09;
-            const roomDelay = offlineCtx.createDelay();
-            roomDelay.delayTime.value = isFilter1 ? 0.024 : 0.032;
-
-            // 4. Vocal Presence Clarity Boost
             const vocalBoost = offlineCtx.createBiquadFilter();
             vocalBoost.type = "peaking";
             vocalBoost.frequency.value = 2850;
             vocalBoost.Q.value = 1.4;
             vocalBoost.gain.value = 3.0;
 
-            // 5. Harmonic Waveshaper
             const shaper = offlineCtx.createWaveShaper();
             shaper.curve = makeSoftCurve(isFilter1 ? 6 : 14);
 
-            // Connect DSP Chain
+            // Stereo Haas micro-spread for clean Stereo MP3 framing
+            const splitter = offlineCtx.createChannelSplitter(2);
+            const merger = offlineCtx.createChannelMerger(2);
+            const rightMicroDelay = offlineCtx.createDelay();
+            rightMicroDelay.delayTime.value = isFilter1 ? 0.008 : 0.013;
+
             source.connect(allpass1);
             allpass1.connect(allpass2);
             allpass2.connect(lovePhilter);
             lovePhilter.connect(vocalBoost);
             vocalBoost.connect(shaper);
 
-            shaper.connect(dryGain);
-            shaper.connect(roomDelay);
-            roomDelay.connect(wetGain);
-
-            dryGain.connect(offlineCtx.destination);
-            wetGain.connect(offlineCtx.destination);
+            shaper.connect(splitter);
+            splitter.connect(merger, 0, 0);
+            splitter.connect(rightMicroDelay, 1);
+            rightMicroDelay.connect(merger, 0, 1);
+            merger.connect(offlineCtx.destination);
 
             source.start(0, 0, effectiveDuration);
-            status.innerText = `⚙️ 128kbps MP3 तैयार हो रहा है...`;
+            status.innerText = `⚙️ Fast-Upload Stereo MP3 बन रहा है...`;
 
             const rendered = await offlineCtx.startRendering();
             normalizeToZeroDBFS(rendered);
 
-            const mp3Blob = await encodeToMP3Safe(rendered, 128);
+            // Encode Standard 44.1kHz Stereo 96kbps MP3 (Super fast upload on Suno, ~0.7 MB/min)
+            const mp3Blob = await encodeToStereoMP3(rendered, 96);
             const outSizeMB = (mp3Blob.size / (1024 * 1024)).toFixed(2);
 
             if (blobUrl) URL.revokeObjectURL(blobUrl);
@@ -684,7 +659,7 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `ManojStudio_FL${filterNum}_${randNum}.mp3`;
+            const finalFileName = `ManojSuno_F${filterNum}_${randNum}.mp3`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
@@ -699,7 +674,7 @@
             autoLink.click();
             document.body.removeChild(autoLink);
 
-            status.innerText = `✅ तैयार! ${outSizeMB} MB की 128kbps MP3 फ़ाइल डाउनलोड हो गई।`;
+            status.innerText = `✅ तैयार! ${outSizeMB} MB की Suno-Ready MP3 डाउनलोड हो गई।`;
         } catch (err) {
             console.error(err);
             status.innerText = "❌ Error: " + (err.message || "दोबारा ट्राई करें।");
@@ -709,40 +684,43 @@
         }
     }
 
-    async function encodeToMP3Safe(audioBuffer, kbps) {
+    // Standard Stereo MP3 Encoder (Eliminates Suno 30s upload stall)
+    async function encodeToStereoMP3(audioBuffer, kbps) {
         if (typeof lamejs === 'undefined') {
             throw new Error("MP3 Encoder लोड नहीं हुआ, इंटरनेट चेक करके पेज रिफ़्रेश करें।");
         }
         const sampleRate = audioBuffer.sampleRate;
-        const floatSamples = audioBuffer.getChannelData(0);
-        const len = floatSamples.length;
-        const int16Samples = new Int16Array(len);
+        const leftFloat = audioBuffer.getChannelData(0);
+        const rightFloat = audioBuffer.numberOfChannels > 1 ? audioBuffer.getChannelData(1) : leftFloat;
+        const len = leftFloat.length;
+
+        const leftInt16 = new Int16Array(len);
+        const rightInt16 = new Int16Array(len);
 
         for (let i = 0; i < len; i++) {
-            const s = Math.max(-1, Math.min(1, floatSamples[i]));
-            int16Samples[i] = s < 0 ? s * 32768 : s * 32767;
+            const l = Math.max(-1, Math.min(1, leftFloat[i]));
+            const r = Math.max(-1, Math.min(1, rightFloat[i]));
+            leftInt16[i] = l < 0 ? l * 32768 : l * 32767;
+            rightInt16[i] = r < 0 ? r * 32768 : r * 32767;
         }
 
-        const mp3encoder = new lamejs.Mp3Encoder(1, sampleRate, kbps);
+        const mp3encoder = new lamejs.Mp3Encoder(2, sampleRate, kbps);
         const mp3Data = [];
         const sampleBlockSize = 1152;
 
         for (let i = 0; i < len; i += sampleBlockSize) {
-            const sampleChunk = int16Samples.subarray(i, i + sampleBlockSize);
-            const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
-            if (mp3buf.length > 0) {
-                mp3Data.push(mp3buf);
-            }
-            if (i % (sampleBlockSize * 150) === 0) {
+            const leftChunk = leftInt16.subarray(i, i + sampleBlockSize);
+            const rightChunk = rightInt16.subarray(i, i + sampleBlockSize);
+            const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+            if (mp3buf.length > 0) mp3Data.push(mp3buf);
+            if (i % (sampleBlockSize * 120) === 0) {
                 await new Promise(r => setTimeout(r, 0));
             }
         }
         const endBuf = mp3encoder.flush();
-        if (endBuf.length > 0) {
-            mp3Data.push(endBuf);
-        }
+        if (endBuf.length > 0) mp3Data.push(endBuf);
 
-        return new Blob(mp3Data, { type: 'audio/mp3' });
+        return new Blob(mp3Data, { type: 'audio/mpeg' });
     }
 
     // --- FAST AUTO DETECT USING GEMINI 3.8 FLASH ---
@@ -763,14 +741,14 @@
         try {
             const rawAudioBuf = await getDecodedAudio();
             
-            const fastCtx = new OfflineAudioContext(1, Math.floor(rawAudioBuf.duration * 16000), 16000);
+            const fastCtx = new OfflineAudioContext(2, Math.floor(rawAudioBuf.duration * 16000), 16000);
             const src = fastCtx.createBufferSource();
             src.buffer = rawAudioBuf;
             src.connect(fastCtx.destination);
             src.start(0);
             const smallBuf = await fastCtx.startRendering();
             
-            const tinyMp3Blob = await encodeToMP3Safe(smallBuf, 32);
+            const tinyMp3Blob = await encodeToStereoMP3(smallBuf, 32);
             const base64Audio = await blobToBase64(tinyMp3Blob);
 
             status.innerText = "🤖 Gemini 3.8 Flash स्टाइल और लिरिक्स निकाल रहा है...";
@@ -832,8 +810,9 @@ Return strictly raw JSON without markdown.`;
         const left = audioBuf.getChannelData(0);
         const right = isStereo ? audioBuf.getChannelData(1) : left;
 
-        const outBuf = new AudioBuffer({ length: len, numberOfChannels: 1, sampleRate: sr });
-        const out = outBuf.getChannelData(0);
+        const outBuf = new AudioBuffer({ length: len, numberOfChannels: 2, sampleRate: sr });
+        const outL = outBuf.getChannelData(0);
+        const outR = outBuf.getChannelData(1);
 
         const jitterDepthSamples = Math.floor(sr * (filterNum === 1 ? 0.0025 : 0.0045));
         const jitterFreq = filterNum === 1 ? 1.4 : 2.3;
@@ -847,7 +826,9 @@ Return strictly raw JSON without markdown.`;
             const s0 = isStereo ? ((left[idx0] + right[idx0]) * 0.5 + (left[idx0] - right[idx0]) * 0.5 * (filterNum === 1 ? 0.35 : 0.15)) : left[idx0];
             const s1 = isStereo ? ((left[idx0 + 1] + right[idx0 + 1]) * 0.5 + (left[idx0 + 1] - right[idx0 + 1]) * 0.5 * (filterNum === 1 ? 0.35 : 0.15)) : left[idx0 + 1];
 
-            out[i] = s0 + frac * (s1 - s0);
+            const sample = s0 + frac * (s1 - s0);
+            outL[i] = sample;
+            outR[i] = sample;
         }
         return outBuf;
     }
