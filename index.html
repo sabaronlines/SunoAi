@@ -410,7 +410,7 @@
 <div class="app-box">
     <div class="header">
         <div class="hacker-logo" data-text="MANOJ MUSIC STUDIO">MANOJ MUSIC STUDIO</div>
-        <p>[SYSTEM_ACTIVE] |> ULTRA-LIGHT 64KBPS MP3 ENGINE<span class="cursor-blink">_</span></p>
+        <p>[SYSTEM_ACTIVE] |> SMART CHUNKS + 64KBPS MP3 BYPASS<span class="cursor-blink">_</span></p>
     </div>
 
     <!-- Gemini API Key -->
@@ -425,7 +425,7 @@
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE &amp; LYRICS</button>
     </div>
 
-    <!-- TAB 1: ULTRA-LIGHT 64KBPS ID3 MP3 (FAST 4G UPLOAD) -->
+    <!-- TAB 1: SMART CHUNKS + CLEAR VOCAL + 64KBPS FAST MP3 -->
     <div id="audioSection" class="section-view active">
         
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
@@ -433,30 +433,30 @@
                 <div class="upload-icon">🎵</div>
                 <div class="upload-details">
                     <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
-                    <div class="upload-sub" id="fileSub">Ultra-Light MP3 (~0.48 MB / Min)</div>
+                    <div class="upload-sub" id="fileSub">Smart Chunks + Ultra-Light MP3 (~0.48 MB/Min)</div>
                 </div>
             </div>
             <div class="browse-pill" id="changeAudioBtn">SELECT</div>
         </div>
         <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
 
-        <span class="filter-title">फ़िल्टर चुनें (साफ़ आवाज़ + सुपर-फ़ास्ट अपलोड):</span>
+        <span class="filter-title">फ़िल्टर चुनें (साफ़ आवाज़ + Anti-Detect Smart Chunks):</span>
         
         <div class="dual-filter-grid">
             <div class="filter-card selected" id="cardFilter1" onclick="selectAndRunFilter(1)">
-                <span class="f-badge">FILTER #1 • LIGHT MP3</span>
-                <span class="f-name">STUDIO FILTER #1</span>
-                <span class="f-desc">Clear Voice EQ + 1.03x + ~1.8 MB MP3</span>
+                <span class="f-badge">FILTER #1 • CLEAR CHUNKS</span>
+                <span class="f-name">SUNO FILTER #1</span>
+                <span class="f-desc">Smart Micro-Chunks + Allpass + Clear Voice (1.075x)</span>
             </div>
 
             <div class="filter-card" id="cardFilter2" onclick="selectAndRunFilter(2)">
-                <span class="f-badge">FILTER #2 • WARM PRO</span>
-                <span class="f-name">STUDIO FILTER #2</span>
-                <span class="f-desc">Vocal Clarity + 0.96x + ~1.8 MB MP3</span>
+                <span class="f-badge">FILTER #2 • DEEP SHIELD</span>
+                <span class="f-name">SUNO FILTER #2</span>
+                <span class="f-desc">Deep Chunks + Phase Shift + Vocal Focus (0.915x)</span>
             </div>
         </div>
 
-        <button class="btn btn-convert" id="convertBtn" onclick="runAutoPipeline(selectedFilter)" disabled>⚡ CONVERT &amp; DOWNLOAD MP3 (FILTER #1)</button>
+        <button class="btn btn-convert" id="convertBtn" onclick="runAutoPipeline(selectedFilter)" disabled>⚡ CHANGE AUDIO &amp; DOWNLOAD (FILTER #1)</button>
 
         <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 FAST AUTO-DETECT STYLE &amp; LYRICS</button>
 
@@ -466,21 +466,21 @@
         <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.MP3)</a>
     </div>
 
-    <!-- TAB 2: STYLE & LYRICS -->
+    <!-- TAB 2: JP DIGITAL HEAVY LYRICS BYPASS -->
     <div id="lyricsSection" class="section-view">
-        <label class="field-label" for="detectedStyle">🎸 DETECTED MUSIC STYLE (Style Prompt):</label>
+        <label class="field-label" for="detectedStyle">🎸 DETECTED MUSIC STYLE (Suno Style Prompt):</label>
         <textarea id="detectedStyle" class="style-box" placeholder="गाना अपलोड करके Fast Auto-Detect दबाने पर म्यूज़िक स्टाइल यहाँ आ जाएगा..."></textarea>
         <button class="btn btn-copy" style="margin-bottom: 14px;" onclick="copyText('detectedStyle', 'copyStyleBtn')" id="copyStyleBtn">📋 COPY MUSIC STYLE</button>
 
         <label class="field-label" for="inputLyrics">> यहाँ पे लिरिक्स डालें:</label>
         <textarea id="inputLyrics" placeholder="यहाँ हिंदी, उड़िया या इंग्लिश लिरिक्स लिखें या पेस्ट करें..."></textarea>
 
-        <button class="btn btn-gen" onclick="formatLyrics()">⚡ FORMAT &amp; CLEAN LYRICS</button>
+        <button class="btn btn-gen" onclick="generateBypass()">⚡ RE-GENERATE NEW BYPASS</button>
 
-        <label class="field-label" for="outputLyrics">// FORMATTED LYRICS //</label>
-        <textarea id="outputLyrics" readonly placeholder="तैयार लिरिक्स यहाँ दिखेंगे..."></textarea>
+        <label class="field-label" for="outputLyrics">// BYPASS GENERATED //</label>
+        <textarea id="outputLyrics" readonly placeholder="बदलते हुए लिरिक्स यहाँ दिखेंगे..."></textarea>
 
-        <button class="btn btn-copy" onclick="copyText('outputLyrics', 'copyLyricsBtn')" id="copyLyricsBtn">📋 COPY LYRICS</button>
+        <button class="btn btn-copy" onclick="copyText('outputLyrics', 'copyLyricsBtn')" id="copyLyricsBtn">📋 COPY ENCRYPTED LYRICS</button>
     </div>
 </div>
 
@@ -516,7 +516,7 @@
         selectedFilter = num;
         document.getElementById('cardFilter1').classList.toggle('selected', num === 1);
         document.getElementById('cardFilter2').classList.toggle('selected', num === 2);
-        document.getElementById('convertBtn').innerText = `⚡ CONVERT & DOWNLOAD MP3 (FILTER #${num})`;
+        document.getElementById('convertBtn').innerText = `⚡ CHANGE AUDIO & DOWNLOAD (FILTER #${num})`;
         if (currentFile) {
             runAutoPipeline(num);
         }
@@ -550,7 +550,48 @@
         return decodedCache;
     }
 
-    // --- ULTRA-LIGHT 64KBPS MP3 + ID3v2 HEADER (ZERO 4G UPLOAD STALL) ---
+    // --- SMART CROSSFADED CHUNKS + VOCAL FOCUS (Breaks Fingerprint, Keeps Voice Crystal Clear) ---
+    function applySmartChunksAndVocalFocus(audioBuf, filterNum) {
+        const sr = audioBuf.sampleRate;
+        const len = audioBuf.length;
+        const isStereo = audioBuf.numberOfChannels >= 2;
+        const left = audioBuf.getChannelData(0);
+        const right = isStereo ? audioBuf.getChannelData(1) : left;
+
+        const outBuf = new AudioBuffer({ length: len, numberOfChannels: 1, sampleRate: sr });
+        const out = outBuf.getChannelData(0);
+
+        // Micro-chunk time-warping: smoothly modulates read pointer so beat-grid & landmark hashes break
+        // without any clicks or vocal distortion!
+        const jitterDepth = Math.floor(sr * (filterNum === 1 ? 0.0038 : 0.0062));
+        const modFreq1 = filterNum === 1 ? 1.65 : 2.45;
+        const modFreq2 = filterNum === 1 ? 0.42 : 0.78;
+        const sideKeep = filterNum === 1 ? 0.22 : 0.12; // Suppresses stereo instrumental fingerprint, keeps center vocal
+
+        for (let i = 0; i < len; i++) {
+            // Dual non-periodic wave modulation for chunk-level timing drift
+            const drift = (
+                Math.sin((2 * Math.PI * modFreq1 * i) / sr) * 0.65 +
+                Math.cos((2 * Math.PI * modFreq2 * i) / sr) * 0.35
+            ) * jitterDepth;
+
+            const readIdx = Math.min(len - 2, Math.max(0, i + drift));
+            const idx0 = Math.floor(readIdx);
+            const frac = readIdx - idx0;
+
+            const s0 = isStereo
+                ? ((left[idx0] + right[idx0]) * 0.5 + (left[idx0] - right[idx0]) * 0.5 * sideKeep)
+                : left[idx0];
+            const s1 = isStereo
+                ? ((left[idx0 + 1] + right[idx0 + 1]) * 0.5 + (left[idx0 + 1] - right[idx0 + 1]) * 0.5 * sideKeep)
+                : left[idx0 + 1];
+
+            out[i] = s0 + frac * (s1 - s0);
+        }
+        return outBuf;
+    }
+
+    // --- ANTI-DETECT SMART CHUNK + CLEAR VOCAL + 64KBPS ID3 MP3 PIPELINE ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -559,53 +600,78 @@
         const status = document.getElementById('statusBox');
         convertBtn.disabled = true;
 
-        status.innerText = `⏳ Studio Filter #${filterNum} प्रोसेस हो रहा है...`;
+        status.innerText = `⏳ Smart Chunks Filter #${filterNum} प्रोसेस हो रहा है...`;
         await new Promise(r => setTimeout(r, 60));
 
         try {
             const rawAudioBuf = await getDecodedAudio();
+            const chunkedBuf = applySmartChunksAndVocalFocus(rawAudioBuf, filterNum);
 
             const isFilter1 = (filterNum === 1);
-            const rate = isFilter1 ? 1.03 : 0.96;
-            const detuneCents = isFilter1 ? 25 : -45;
+            // Escape +/- 5% fingerprint window while keeping voice natural
+            const rate = isFilter1 ? 1.075 : 0.915;
+            const detuneCents = isFilter1 ? 65 : -120;
 
             const maxAllowedSec = 480;
-            const effectiveDuration = Math.min(rawAudioBuf.duration, maxAllowedSec);
+            const effectiveDuration = Math.min(chunkedBuf.duration, maxAllowedSec);
             const outDurationSec = effectiveDuration / rate;
 
-            // 44.1kHz Mono rendered -> Encoded to 64kbps CBR MP3 (~0.48 MB/min)
             const sampleRate = 44100;
             const outLength = Math.floor(outDurationSec * sampleRate);
 
             const offlineCtx = new OfflineAudioContext(1, outLength, sampleRate);
 
             const source = offlineCtx.createBufferSource();
-            source.buffer = rawAudioBuf;
+            source.buffer = chunkedBuf;
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // 1. Clean High-Pass Filter (Removes low mud)
+            // 1. Cascaded Allpass Phase Dispersers (Scrambles spectral phase completely, zero vocal mud!)
+            const allpass1 = offlineCtx.createBiquadFilter();
+            allpass1.type = "allpass";
+            allpass1.frequency.value = isFilter1 ? 580 : 440;
+            allpass1.Q.value = 3.5;
+
+            const allpass2 = offlineCtx.createBiquadFilter();
+            allpass2.type = "allpass";
+            allpass2.frequency.value = isFilter1 ? 1950 : 1650;
+            allpass2.Q.value = 4.0;
+
+            // 2. Clean High-Pass Filter (Removes low-end rumble so lyrics stay sharp)
             const highPass = offlineCtx.createBiquadFilter();
             highPass.type = "highpass";
-            highPass.frequency.value = 85;
+            highPass.frequency.value = 90;
 
-            // 2. Vocal Presence Clarity EQ
+            // 3. Gentle Dynamic Spectral Sweep (Breaks Mel-spectrogram peaks cleanly)
+            const dynSweep = offlineCtx.createBiquadFilter();
+            dynSweep.type = "peaking";
+            dynSweep.frequency.value = isFilter1 ? 1250 : 1050;
+            dynSweep.Q.value = 2.0;
+            dynSweep.gain.value = isFilter1 ? 3.2 : 4.2;
+
+            const lfo = offlineCtx.createOscillator();
+            const lfoGain = offlineCtx.createGain();
+            lfo.type = "sine";
+            lfo.frequency.value = isFilter1 ? 0.6 : 1.05;
+            lfoGain.gain.value = isFilter1 ? 500 : 750;
+            lfo.connect(lfoGain);
+            lfoGain.connect(dynSweep.frequency);
+            lfo.start(0);
+
+            // 4. Vocal Clarity Presence Boost (Makes voice & lyrics super clear for Suno)
             const vocalClarity = offlineCtx.createBiquadFilter();
             vocalClarity.type = "peaking";
-            vocalClarity.frequency.value = 2800;
+            vocalClarity.frequency.value = 2850;
             vocalClarity.Q.value = 1.2;
-            vocalClarity.gain.value = isFilter1 ? 2.5 : 3.0;
+            vocalClarity.gain.value = 3.2;
 
-            // 3. Gentle Tone Shelf
-            const toneShelf = offlineCtx.createBiquadFilter();
-            toneShelf.type = "highshelf";
-            toneShelf.frequency.value = 5000;
-            toneShelf.gain.value = isFilter1 ? 1.5 : -1.0;
-
-            source.connect(highPass);
-            highPass.connect(vocalClarity);
-            vocalClarity.connect(toneShelf);
-            toneShelf.connect(offlineCtx.destination);
+            // Connect DSP Chain
+            source.connect(allpass1);
+            allpass1.connect(allpass2);
+            allpass2.connect(highPass);
+            highPass.connect(dynSweep);
+            dynSweep.connect(vocalClarity);
+            vocalClarity.connect(offlineCtx.destination);
 
             source.start(0, 0, effectiveDuration);
             status.innerText = `⚙️ अल्ट्रा-लाइट 64kbps MP3 बन रहा है...`;
@@ -624,7 +690,7 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `ManojLight_F${filterNum}_${randNum}.mp3`;
+            const finalFileName = `ManojChunks_F${filterNum}_${randNum}.mp3`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
@@ -639,7 +705,7 @@
             autoLink.click();
             document.body.removeChild(autoLink);
 
-            status.innerText = `✅ तैयार! सिर्फ़ ${outSizeMB} MB की फ़ास्ट-अपलोड MP3 डाउनलोड हो गई।`;
+            status.innerText = `✅ तैयार! ${outSizeMB} MB की Smart-Chunk MP3 डाउनलोड हो गई।`;
         } catch (err) {
             console.error(err);
             status.innerText = "❌ Error: " + (err.message || "दोबारा ट्राई करें।");
@@ -649,7 +715,7 @@
         }
     }
 
-    // Encodes 64kbps CBR MP3 with a valid ID3v2.3 Header prepended
+    // Encodes 64kbps CBR MP3 with valid ID3v2.3 Header (Fast 4G upload, zero 30s stall)
     async function encodeUltraLightMP3(audioBuffer, kbps) {
         if (typeof lamejs === 'undefined') {
             throw new Error("MP3 Encoder लोड नहीं हुआ, इंटरनेट चेक करके पेज रिफ़्रेश करें।");
@@ -665,7 +731,6 @@
         }
 
         const mp3encoder = new lamejs.Mp3Encoder(1, sampleRate, kbps);
-        // Prepend standard 10-byte ID3v2.3 header so upload servers recognize MP3 instantly
         const id3Header = new Uint8Array([0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
         const mp3Data = [id3Header];
         const sampleBlockSize = 1152;
@@ -730,7 +795,7 @@
             status.innerText = "🤖 Gemini 3.8 Flash स्टाइल और लिरिक्स निकाल रहा है...";
 
             const promptText = `Listen to this song and return ONLY valid JSON with two keys:
-1. "style": Concise music style prompt in English (genre, regional vibe like Odia/Sambalpuri/Hindi, tempo, instruments, vocal gender/tone, max 160 chars).
+1. "style": Concise Suno AI music style prompt in English (genre, regional vibe like Odia/Sambalpuri/Hindi, tempo, instruments, vocal gender/tone, max 160 chars).
 2. "lyrics": Complete transcribed lyrics in original script (Devanagari for Hindi, Odia script for Odia/Sambalpuri, or English) with [Verse], [Chorus] tags.
 Return strictly raw JSON without markdown.`;
 
@@ -757,9 +822,9 @@ Return strictly raw JSON without markdown.`;
             document.getElementById('detectedStyle').value = parsed.style || "";
             document.getElementById('inputLyrics').value = parsed.lyrics || "";
 
-            if (parsed.lyrics) formatLyrics();
+            if (parsed.lyrics) generateBypass();
 
-            status.innerText = "✅ स्टाइल और लिरिक्स तैयार हैं!";
+            status.innerText = "✅ स्टाइल और बायपास लिरिक्स तैयार हैं!";
             setTimeout(() => switchTab('lyrics'), 350);
 
         } catch (err) {
@@ -779,14 +844,46 @@ Return strictly raw JSON without markdown.`;
         });
     }
 
-    function formatLyrics() {
-        const input = document.getElementById('inputLyrics').value.trim();
-        if (!input) return;
-        const cleaned = input
-            .split('\n')
-            .map(line => line.trim())
-            .join('\n');
-        document.getElementById('outputLyrics').value = cleaned;
+    // --- JP DIGITAL STYLE HEAVY LYRICS BYPASS ---
+    function generateBypass() {
+        const input = document.getElementById('inputLyrics').value;
+        if (!input.trim()) return;
+
+        const invisibles = ['\u200B', '\u200C', '\u2060', '\uFEFF'];
+        const jpMarks = ['\u030A', '\u0325', '\u0323', '\u0307', '\u0324'];
+
+        let result = '';
+        const lines = input.split('\n');
+
+        for (let l = 0; l < lines.length; l++) {
+            const line = lines[l];
+            if (line.trim().startsWith('[') && line.trim().endsWith(']')) {
+                result += line + '\n';
+                continue;
+            }
+
+            const segmenter = new Intl.Segmenter('hi', { granularity: 'grapheme' });
+            const segments = Array.from(segmenter.segment(line)).map(s => s.segment);
+
+            for (let i = 0; i < segments.length; i++) {
+                const char = segments[i];
+                if (char.trim() === '' || /[.,!?'"\-*()0-9]/.test(char)) {
+                    result += char;
+                    continue;
+                }
+
+                const randInv = invisibles[Math.floor(Math.random() * invisibles.length)];
+                if (Math.random() > 0.15) {
+                    const randMark = jpMarks[Math.floor(Math.random() * jpMarks.length)];
+                    result += char + randMark + randInv;
+                } else {
+                    result += char + randInv;
+                }
+            }
+            if (l < lines.length - 1) result += '\n';
+        }
+
+        document.getElementById('outputLyrics').value = result;
     }
 
     function copyText(elementId, btnId) {
