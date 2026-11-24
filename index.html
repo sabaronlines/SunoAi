@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MANOJ MUSIC STUDIO</title>
-    <!-- Full lamejs bundle for ultra-light 64kbps MP3 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.all.min.js"></script>
     <style>
         * {
@@ -25,24 +24,13 @@
             overflow-x: hidden;
             position: relative;
         }
-
-        /* Floating Music Notes Background */
         .music-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
         .note {
-            position: absolute;
-            bottom: -50px;
-            color: #ff1493;
-            font-size: 22px;
-            opacity: 0;
+            position: absolute; bottom: -50px; color: #ff1493; font-size: 22px; opacity: 0;
             text-shadow: 0 0 10px rgba(255, 20, 147, 0.6);
             animation: floatNotes 9s linear infinite;
         }
@@ -53,432 +41,235 @@
         .note:nth-child(5) { left: 70%; font-size: 22px; animation-delay: 3.5s; animation-duration: 8.5s; }
         .note:nth-child(6) { left: 84%; font-size: 30px; animation-delay: 5s; animation-duration: 11s; color: #ff1493; }
         .note:nth-child(7) { left: 93%; font-size: 19px; animation-delay: 2.5s; animation-duration: 9s; }
-
         @keyframes floatNotes {
             0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
             15% { opacity: 0.75; }
             80% { opacity: 0.65; }
             100% { transform: translateY(-108vh) rotate(360deg) scale(1.25); opacity: 0; }
         }
-
-        /* Main Studio Glass Card */
         .app-box {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 480px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
+            position: relative; z-index: 1; width: 100%; max-width: 480px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
             border: 2px solid #ff1493;
             box-shadow: 0 0 25px rgba(255, 20, 147, 0.28), inset 0 0 12px rgba(255, 105, 180, 0.15);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 6px;
+            border-radius: 18px; padding: 18px; margin-top: 6px;
         }
-
-        /* Hacker Style Glitch Logo */
         .header {
-            text-align: center;
-            margin-bottom: 14px;
-            padding: 8px 4px;
+            text-align: center; margin-bottom: 14px; padding: 8px 4px;
             border-bottom: 1px dashed rgba(255, 20, 147, 0.35);
         }
         .hacker-logo {
-            position: relative;
-            display: inline-block;
+            position: relative; display: inline-block;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 21px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: #ff1493;
-            text-transform: uppercase;
+            font-size: 21px; font-weight: 900; letter-spacing: 1.5px;
+            color: #ff1493; text-transform: uppercase;
             text-shadow: 0 0 8px rgba(255, 20, 147, 0.55), 0 0 18px rgba(255, 105, 180, 0.4);
             animation: hackerPulse 2.5s infinite alternate;
         }
-        .hacker-logo::before,
-        .hacker-logo::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
+        .hacker-logo::before, .hacker-logo::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent;
         }
         .hacker-logo::before {
-            left: 2px;
-            text-shadow: -2px 0 #00e5ff;
-            clip-path: inset(20% 0 45% 0);
+            left: 2px; text-shadow: -2px 0 #00e5ff; clip-path: inset(20% 0 45% 0);
             animation: glitchAnim1 2.2s infinite linear alternate-reverse;
         }
         .hacker-logo::after {
-            left: -2px;
-            text-shadow: 2px 0 #ff007f;
-            clip-path: inset(55% 0 15% 0);
+            left: -2px; text-shadow: 2px 0 #ff007f; clip-path: inset(55% 0 15% 0);
             animation: glitchAnim2 1.8s infinite linear alternate-reverse;
         }
-
-        @keyframes hackerPulse {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(1.02); filter: brightness(1.15); }
-        }
+        @keyframes hackerPulse { 0% { transform: scale(1); } 100% { transform: scale(1.02); filter: brightness(1.15); } }
         @keyframes glitchAnim1 {
             0% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 1px); }
-            25% { clip-path: inset(50% 0 20% 0); transform: translate(2px, -1px); }
             50% { clip-path: inset(30% 0 40% 0); transform: translate(-1px, 2px); }
-            75% { clip-path: inset(75% 0 5% 0); transform: translate(2px, 0px); }
             100% { clip-path: inset(15% 0 60% 0); transform: translate(-2px, -1px); }
         }
         @keyframes glitchAnim2 {
             0% { clip-path: inset(65% 0 10% 0); transform: translate(2px, -1px); }
-            30% { clip-path: inset(15% 0 65% 0); transform: translate(-2px, 1px); }
-            60% { clip-path: inset(45% 0 30% 0); transform: translate(1px, -2px); }
+            50% { clip-path: inset(45% 0 30% 0); transform: translate(1px, -2px); }
             100% { clip-path: inset(5% 0 80% 0); transform: translate(-1px, 2px); }
         }
-
         .header p {
-            color: #d6006e;
-            font-size: 11px;
-            margin-top: 5px;
-            font-family: 'Courier New', monospace;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+            color: #d6006e; font-size: 11px; margin-top: 5px;
+            font-family: 'Courier New', monospace; font-weight: 800; letter-spacing: 0.5px;
         }
         .cursor-blink { animation: blink 0.9s infinite; }
         @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-
-        /* API Key Bar */
         .api-bar {
-            background: #fff0f7;
-            border: 1.5px solid #ff69b4;
-            border-radius: 10px;
-            padding: 6px 8px;
-            margin-bottom: 14px;
-            display: flex;
-            gap: 6px;
-            align-items: center;
+            background: #fff0f7; border: 1.5px solid #ff69b4; border-radius: 10px;
+            padding: 6px 8px; margin-bottom: 14px; display: flex; gap: 6px; align-items: center;
         }
         .api-bar input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #1e1b2e;
-            padding: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            outline: none;
+            flex: 1; background: transparent; border: none; color: #1e1b2e;
+            padding: 6px; font-size: 12px; font-weight: 600; outline: none;
         }
         .api-bar input::placeholder { color: #a8557c; }
         .api-bar button {
-            background: linear-gradient(90deg, #ff1493, #ff69b4);
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 7px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
+            background: linear-gradient(90deg, #ff1493, #ff69b4); color: #fff; border: none;
+            padding: 6px 12px; border-radius: 7px; font-size: 11px; font-weight: 800; cursor: pointer;
         }
-
-        /* Top Tabs */
         .nav-tabs {
-            display: flex;
-            gap: 6px;
-            background: #ffe6f2;
-            padding: 5px;
-            border-radius: 12px;
-            border: 1.5px solid #ff85c0;
-            margin-bottom: 16px;
+            display: flex; gap: 6px; background: #ffe6f2; padding: 5px;
+            border-radius: 12px; border: 1.5px solid #ff85c0; margin-bottom: 14px;
         }
         .tab-btn {
-            flex: 1;
-            padding: 11px 6px;
-            border: none;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            background: transparent;
-            color: #9d174d;
-            transition: 0.2s;
+            flex: 1; padding: 11px 6px; border: none; border-radius: 9px;
+            font-size: 12px; font-weight: 800; cursor: pointer; background: transparent; color: #9d174d;
         }
         .tab-btn.active {
-            background: linear-gradient(90deg, #ff1493, #ec4899);
-            color: #ffffff;
+            background: linear-gradient(90deg, #ff1493, #ec4899); color: #ffffff;
             box-shadow: 0 3px 12px rgba(255, 20, 147, 0.45);
         }
-
         .section-view { display: none; }
         .section-view.active { display: block; }
-
-        /* Modern Upload / Change Audio Bar */
         .modern-upload {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-            border: 1.5px dashed #ff1493;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 14px;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.08);
+            display: flex; align-items: center; justify-content: space-between;
+            background: #ffffff; border: 1.5px dashed #ff1493; border-radius: 12px;
+            padding: 12px; margin-bottom: 12px; gap: 10px; cursor: pointer;
         }
-        .modern-upload:active { background: #fff0f7; transform: scale(0.99); }
         .upload-left { display: flex; align-items: center; gap: 10px; overflow: hidden; }
         .upload-icon {
-            width: 40px;
-            height: 40px;
-            background: #ffe4f1;
-            border: 1.5px solid #ff1493;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-            flex-shrink: 0;
+            width: 40px; height: 40px; background: #ffe4f1; border: 1.5px solid #ff1493;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0;
         }
         .upload-details { overflow: hidden; }
-        .upload-title {
-            font-size: 13.5px;
-            font-weight: 800;
-            color: #831843;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .upload-sub {
-            font-size: 11px;
-            color: #db2777;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
-        }
+        .upload-title { font-size: 13.5px; font-weight: 800; color: #831843; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .upload-sub { font-size: 11px; color: #db2777; font-weight: 600; margin-top: 2px; }
         .browse-pill {
-            background: linear-gradient(90deg, #ff1493, #ff69b4);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 8px 12px;
-            border-radius: 8px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);
+            background: linear-gradient(90deg, #ff1493, #ff69b4); color: #fff;
+            font-size: 11px; font-weight: 800; padding: 8px 12px; border-radius: 8px; flex-shrink: 0;
         }
-
-        /* Filter Cards */
-        .filter-title {
-            font-size: 12px;
-            color: #9d174d;
-            font-weight: 800;
-            margin-bottom: 9px;
-            display: block;
-            text-align: center;
+        /* Clip Length Selector for Slow 4G */
+        .dur-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;
         }
-        .dual-filter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+        .dur-pill {
+            background: #ffffff; border: 1.5px solid #ffb6d9; border-radius: 9px;
+            padding: 8px 4px; text-align: center; font-size: 11px; font-weight: 800;
+            color: #9d174d; cursor: pointer;
         }
+        .dur-pill.active {
+            background: #ff1493; color: #fff; border-color: #ff1493;
+            box-shadow: 0 2px 10px rgba(255, 20, 147, 0.35);
+        }
+        .filter-title { font-size: 12px; color: #9d174d; font-weight: 800; margin-bottom: 8px; display: block; text-align: center; }
+        .dual-filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .filter-card {
-            background: #ffffff;
-            border: 1.5px solid #ffb6d9;
-            border-radius: 13px;
-            padding: 12px 9px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+            background: #ffffff; border: 1.5px solid #ffb6d9; border-radius: 13px;
+            padding: 12px 9px; text-align: center; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;
         }
         .filter-card.selected {
-            background: #fff0f7;
-            border: 2px solid #ff1493;
+            background: #fff0f7; border: 2px solid #ff1493;
             box-shadow: 0 0 16px rgba(255, 20, 147, 0.35);
         }
         .f-badge {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 800;
-            padding: 3px 7px;
-            border-radius: 5px;
-            background: #ffe4f1;
-            color: #be185d;
-            margin-bottom: 6px;
-            font-family: monospace;
+            display: inline-block; font-size: 9px; font-weight: 800; padding: 3px 7px;
+            border-radius: 5px; background: #ffe4f1; color: #be185d; margin-bottom: 6px; font-family: monospace;
         }
         .filter-card.selected .f-badge { background: #ff1493; color: #ffffff; }
         .f-name { font-size: 13px; font-weight: 900; color: #831843; display: block; }
         .f-desc { font-size: 10.5px; color: #6b7280; font-weight: 600; display: block; margin-top: 4px; line-height: 1.35; }
-
-        /* Textareas */
-        .field-label {
-            color: #9d174d;
-            font-weight: 800;
-            font-size: 12px;
-            display: block;
-            margin-bottom: 6px;
-        }
+        .field-label { color: #9d174d; font-weight: 800; font-size: 12px; display: block; margin-bottom: 6px; }
         textarea {
-            width: 100%;
-            height: 125px;
-            background-color: #ffffff;
-            border: 1.5px solid #ff69b4;
-            color: #1e1b2e;
-            padding: 11px;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 10px;
-            resize: vertical;
-            outline: none;
-            margin-bottom: 12px;
-            font-family: monospace;
+            width: 100%; height: 125px; background-color: #ffffff; border: 1.5px solid #ff69b4;
+            color: #1e1b2e; padding: 11px; font-size: 14px; font-weight: 600;
+            border-radius: 10px; resize: vertical; outline: none; margin-bottom: 12px; font-family: monospace;
         }
-        textarea:focus { border-color: #ff1493; box-shadow: 0 0 10px rgba(255, 20, 147, 0.25); }
         .style-box { height: 62px; border-color: #ec4899; color: #831843; font-size: 12px; }
-
-        /* Buttons */
         .btn {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            margin-bottom: 10px;
-            letter-spacing: 0.4px;
+            width: 100%; padding: 13px; border: none; border-radius: 10px;
+            font-size: 13px; font-weight: 800; cursor: pointer; text-align: center;
+            display: block; text-decoration: none; margin-bottom: 10px; letter-spacing: 0.4px;
         }
-        .btn-convert {
-            background: linear-gradient(90deg, #ff1493, #d946ef);
-            color: #ffffff;
-            box-shadow: 0 4px 14px rgba(255, 20, 147, 0.4);
-        }
-        .btn-ai {
-            background: linear-gradient(90deg, #ec4899, #f43f5e);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
-        }
-        .btn-gen {
-            background: linear-gradient(90deg, #ff1493, #ff69b4);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(255, 20, 147, 0.35);
-        }
+        .btn-convert { background: linear-gradient(90deg, #ff1493, #d946ef); color: #ffffff; box-shadow: 0 4px 14px rgba(255, 20, 147, 0.4); }
+        .btn-ai { background: linear-gradient(90deg, #ec4899, #f43f5e); color: #ffffff; }
+        .btn-gen { background: linear-gradient(90deg, #ff1493, #ff69b4); color: #ffffff; }
         .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
-        .btn-dl, .btn-copy {
-            background: linear-gradient(90deg, #10b981, #059669);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
+        .btn-dl, .btn-copy { background: linear-gradient(90deg, #10b981, #059669); color: #ffffff; }
         .btn-dl { display: none; }
-        .status-msg {
-            text-align: center;
-            font-size: 12px;
-            color: #be185d;
-            min-height: 20px;
-            margin: 8px 0;
-            font-family: monospace;
-            font-weight: 800;
-        }
+        .status-msg { text-align: center; font-size: 12px; color: #be185d; min-height: 20px; margin: 8px 0; font-family: monospace; font-weight: 800; }
         audio { width: 100%; margin-top: 6px; margin-bottom: 10px; display: none; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-<!-- Floating Music Notes Background -->
 <div class="music-bg">
-    <span class="note">🎵</span>
-    <span class="note">🎶</span>
-    <span class="note">🎼</span>
-    <span class="note">🎧</span>
-    <span class="note">🎵</span>
-    <span class="note">🎶</span>
-    <span class="note">🎹</span>
+    <span class="note">🎵</span><span class="note">🎶</span><span class="note">🎼</span>
+    <span class="note">🎧</span><span class="note">🎵</span><span class="note">🎶</span><span class="note">🎹</span>
 </div>
 
 <div class="app-box">
     <div class="header">
         <div class="hacker-logo" data-text="MANOJ MUSIC STUDIO">MANOJ MUSIC STUDIO</div>
-        <p>[SYSTEM_ACTIVE] |> SMART CHUNKS + 64KBPS MP3 BYPASS<span class="cursor-blink">_</span></p>
+        <p>[SYSTEM_ACTIVE] |> 4G FAST-UPLOAD 48KBPS ENGINE<span class="cursor-blink">_</span></p>
     </div>
 
-    <!-- Gemini API Key -->
     <div class="api-bar">
-        <input type="password" id="geminiKeyInput" placeholder="Gemini API Key (Auto-Detect के लिए)...">
+        <input type="password" id="geminiKeyInput" placeholder="Gemini API Key (Auto-Detect ke liye)...">
         <button onclick="saveApiKey()" id="saveKeyBtn">SAVE</button>
     </div>
 
-    <!-- Tabs -->
     <div class="nav-tabs">
         <button class="tab-btn active" id="tabAudioBtn" onclick="switchTab('audio')">🎧 AUTO AUDIO</button>
         <button class="tab-btn" id="tabLyricsBtn" onclick="switchTab('lyrics')">📝 STYLE &amp; LYRICS</button>
     </div>
 
-    <!-- TAB 1: SMART CHUNKS + CLEAR VOCAL + 64KBPS FAST MP3 -->
     <div id="audioSection" class="section-view active">
-        
         <div class="modern-upload" onclick="document.getElementById('audioInput').click()">
             <div class="upload-left">
                 <div class="upload-icon">🎵</div>
                 <div class="upload-details">
-                    <div class="upload-title" id="fileTitle">फ़ोन से गाना चुनें (Upload Song)</div>
-                    <div class="upload-sub" id="fileSub">Smart Chunks + Ultra-Light MP3 (~0.48 MB/Min)</div>
+                    <div class="upload-title" id="fileTitle">Phone se gaana chunein (Upload Song)</div>
+                    <div class="upload-sub" id="fileSub">48kbps Fast-Upload MP3 (~350 KB / Min)</div>
                 </div>
             </div>
             <div class="browse-pill" id="changeAudioBtn">SELECT</div>
         </div>
-        <input type="file" id="audioInput" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/m4a,audio/aac,audio/ogg,audio/*" style="display:none;">
+        <input type="file" id="audioInput" accept="audio/*" style="display:none;">
 
-        <span class="filter-title">फ़िल्टर चुनें (साफ़ आवाज़ + Anti-Detect Smart Chunks):</span>
-        
+        <span class="filter-title">1. Clip Size chunein (Slow 4G ke liye 1 Min / 2 Min best hai):</span>
+        <div class="dur-row">
+            <div class="dur-pill active" id="dur60" onclick="setDuration(60)">⚡ 1 Min (~350 KB)</div>
+            <div class="dur-pill" id="dur120" onclick="setDuration(120)">🔥 2 Min (~700 KB)</div>
+            <div class="dur-pill" id="dur480" onclick="setDuration(480)">🎵 Full Song</div>
+        </div>
+
+        <span class="filter-title">2. Filter chunein (Smart Chunks + Clear Voice):</span>
         <div class="dual-filter-grid">
             <div class="filter-card selected" id="cardFilter1" onclick="selectAndRunFilter(1)">
-                <span class="f-badge">FILTER #1 • CLEAR CHUNKS</span>
+                <span class="f-badge">FILTER #1 • CLEAR</span>
                 <span class="f-name">SUNO FILTER #1</span>
-                <span class="f-desc">Smart Micro-Chunks + Allpass + Clear Voice (1.075x)</span>
+                <span class="f-desc">Smart Chunks + Allpass + Clear Voice (1.075x)</span>
             </div>
 
             <div class="filter-card" id="cardFilter2" onclick="selectAndRunFilter(2)">
-                <span class="f-badge">FILTER #2 • DEEP SHIELD</span>
+                <span class="f-badge">FILTER #2 • DEEP</span>
                 <span class="f-name">SUNO FILTER #2</span>
                 <span class="f-desc">Deep Chunks + Phase Shift + Vocal Focus (0.915x)</span>
             </div>
         </div>
 
         <button class="btn btn-convert" id="convertBtn" onclick="runAutoPipeline(selectedFilter)" disabled>⚡ CHANGE AUDIO &amp; DOWNLOAD (FILTER #1)</button>
-
         <button class="btn btn-ai" id="detectBtn" onclick="autoDetectSong()" disabled>🔍 FAST AUTO-DETECT STYLE &amp; LYRICS</button>
 
-        <div class="status-msg" id="statusBox">पहले ऊपर से अपना गाना सेलेक्ट करें</div>
+        <div class="status-msg" id="statusBox">Pehle upar se apna gaana select karein</div>
 
         <audio id="player" controls playsinline></audio>
-        <a class="btn btn-dl" id="dlBtn">⬇️ दोबारा डाउनलोड करें (.MP3)</a>
+        <a class="btn btn-dl" id="dlBtn">⬇️ Dobara Download Karein (.MP3)</a>
     </div>
 
-    <!-- TAB 2: JP DIGITAL HEAVY LYRICS BYPASS -->
     <div id="lyricsSection" class="section-view">
         <label class="field-label" for="detectedStyle">🎸 DETECTED MUSIC STYLE (Suno Style Prompt):</label>
-        <textarea id="detectedStyle" class="style-box" placeholder="गाना अपलोड करके Fast Auto-Detect दबाने पर म्यूज़िक स्टाइल यहाँ आ जाएगा..."></textarea>
+        <textarea id="detectedStyle" class="style-box" placeholder="Gaana upload karke Fast Auto-Detect dabane par music style yahan aa jayega..."></textarea>
         <button class="btn btn-copy" style="margin-bottom: 14px;" onclick="copyText('detectedStyle', 'copyStyleBtn')" id="copyStyleBtn">📋 COPY MUSIC STYLE</button>
 
-        <label class="field-label" for="inputLyrics">> यहाँ पे लिरिक्स डालें:</label>
-        <textarea id="inputLyrics" placeholder="यहाँ हिंदी, उड़िया या इंग्लिश लिरिक्स लिखें या पेस्ट करें..."></textarea>
+        <label class="field-label" for="inputLyrics">> Yahan par lyrics dalein:</label>
+        <textarea id="inputLyrics" placeholder="Yahan Hindi, Odia ya English lyrics likhein ya paste karein..."></textarea>
 
         <button class="btn btn-gen" onclick="generateBypass()">⚡ RE-GENERATE NEW BYPASS</button>
 
         <label class="field-label" for="outputLyrics">// BYPASS GENERATED //</label>
-        <textarea id="outputLyrics" readonly placeholder="बदलते हुए लिरिक्स यहाँ दिखेंगे..."></textarea>
+        <textarea id="outputLyrics" readonly placeholder="Badalte hue lyrics yahan dikhenge..."></textarea>
 
         <button class="btn btn-copy" onclick="copyText('outputLyrics', 'copyLyricsBtn')" id="copyLyricsBtn">📋 COPY ENCRYPTED LYRICS</button>
     </div>
@@ -486,6 +277,7 @@
 
 <script>
     let selectedFilter = 1;
+    let maxClipSec = 60; // Default 1 Min (~350 KB) so slow 4G never stalls!
     let currentFile = null;
     let decodedCache = null;
     let blobUrl = null;
@@ -498,7 +290,7 @@
 
     function saveApiKey() {
         const key = document.getElementById('geminiKeyInput').value.trim();
-        if (!key) { alert("कृपया पहले Gemini API Key डालें!"); return; }
+        if (!key) { alert("Kripya pehle Gemini API Key dalein!"); return; }
         localStorage.setItem('gemini_studio_key', key);
         const btn = document.getElementById('saveKeyBtn');
         btn.innerText = "SAVED ✓";
@@ -512,14 +304,19 @@
         document.getElementById('tabLyricsBtn').classList.toggle('active', tab === 'lyrics');
     }
 
+    function setDuration(sec) {
+        maxClipSec = sec;
+        document.getElementById('dur60').classList.toggle('active', sec === 60);
+        document.getElementById('dur120').classList.toggle('active', sec === 120);
+        document.getElementById('dur480').classList.toggle('active', sec === 480);
+    }
+
     function selectAndRunFilter(num) {
         selectedFilter = num;
         document.getElementById('cardFilter1').classList.toggle('selected', num === 1);
         document.getElementById('cardFilter2').classList.toggle('selected', num === 2);
         document.getElementById('convertBtn').innerText = `⚡ CHANGE AUDIO & DOWNLOAD (FILTER #${num})`;
-        if (currentFile) {
-            runAutoPipeline(num);
-        }
+        if (currentFile) runAutoPipeline(num);
     }
 
     document.getElementById('audioInput').addEventListener('change', function(e) {
@@ -530,13 +327,11 @@
             document.getElementById('fileTitle').innerText = currentFile.name;
             document.getElementById('fileSub').innerText = `Ready • ${sizeMB} MB`;
             document.getElementById('changeAudioBtn').innerText = "🔄 CHANGE";
-            
             document.getElementById('convertBtn').disabled = false;
             document.getElementById('detectBtn').disabled = false;
-            
             document.getElementById('dlBtn').style.display = 'none';
             document.getElementById('player').style.display = 'none';
-            document.getElementById('statusBox').innerText = "✅ फ़ाइल तैयार है! Filter #1 या #2 पर टच करें।";
+            document.getElementById('statusBox').innerText = "✅ File ready hai! Clip size aur Filter chunein.";
         }
     });
 
@@ -550,7 +345,6 @@
         return decodedCache;
     }
 
-    // --- SMART CROSSFADED CHUNKS + VOCAL FOCUS (Breaks Fingerprint, Keeps Voice Crystal Clear) ---
     function applySmartChunksAndVocalFocus(audioBuf, filterNum) {
         const sr = audioBuf.sampleRate;
         const len = audioBuf.length;
@@ -561,15 +355,12 @@
         const outBuf = new AudioBuffer({ length: len, numberOfChannels: 1, sampleRate: sr });
         const out = outBuf.getChannelData(0);
 
-        // Micro-chunk time-warping: smoothly modulates read pointer so beat-grid & landmark hashes break
-        // without any clicks or vocal distortion!
         const jitterDepth = Math.floor(sr * (filterNum === 1 ? 0.0038 : 0.0062));
         const modFreq1 = filterNum === 1 ? 1.65 : 2.45;
         const modFreq2 = filterNum === 1 ? 0.42 : 0.78;
-        const sideKeep = filterNum === 1 ? 0.22 : 0.12; // Suppresses stereo instrumental fingerprint, keeps center vocal
+        const sideKeep = filterNum === 1 ? 0.22 : 0.12;
 
         for (let i = 0; i < len; i++) {
-            // Dual non-periodic wave modulation for chunk-level timing drift
             const drift = (
                 Math.sin((2 * Math.PI * modFreq1 * i) / sr) * 0.65 +
                 Math.cos((2 * Math.PI * modFreq2 * i) / sr) * 0.35
@@ -579,19 +370,14 @@
             const idx0 = Math.floor(readIdx);
             const frac = readIdx - idx0;
 
-            const s0 = isStereo
-                ? ((left[idx0] + right[idx0]) * 0.5 + (left[idx0] - right[idx0]) * 0.5 * sideKeep)
-                : left[idx0];
-            const s1 = isStereo
-                ? ((left[idx0 + 1] + right[idx0 + 1]) * 0.5 + (left[idx0 + 1] - right[idx0 + 1]) * 0.5 * sideKeep)
-                : left[idx0 + 1];
+            const s0 = isStereo ? ((left[idx0] + right[idx0]) * 0.5 + (left[idx0] - right[idx0]) * 0.5 * sideKeep) : left[idx0];
+            const s1 = isStereo ? ((left[idx0 + 1] + right[idx0 + 1]) * 0.5 + (left[idx0 + 1] - right[idx0 + 1]) * 0.5 * sideKeep) : left[idx0 + 1];
 
             out[i] = s0 + frac * (s1 - s0);
         }
         return outBuf;
     }
 
-    // --- ANTI-DETECT SMART CHUNK + CLEAR VOCAL + 64KBPS ID3 MP3 PIPELINE ---
     async function runAutoPipeline(filterNum) {
         if (!currentFile || isProcessing) return;
 
@@ -600,7 +386,7 @@
         const status = document.getElementById('statusBox');
         convertBtn.disabled = true;
 
-        status.innerText = `⏳ Smart Chunks Filter #${filterNum} प्रोसेस हो रहा है...`;
+        status.innerText = `⏳ Smart Chunks Filter #${filterNum} process ho raha hai...`;
         await new Promise(r => setTimeout(r, 60));
 
         try {
@@ -608,15 +394,14 @@
             const chunkedBuf = applySmartChunksAndVocalFocus(rawAudioBuf, filterNum);
 
             const isFilter1 = (filterNum === 1);
-            // Escape +/- 5% fingerprint window while keeping voice natural
             const rate = isFilter1 ? 1.075 : 0.915;
             const detuneCents = isFilter1 ? 65 : -120;
 
-            const maxAllowedSec = 480;
-            const effectiveDuration = Math.min(chunkedBuf.duration, maxAllowedSec);
+            const effectiveDuration = Math.min(chunkedBuf.duration, maxClipSec);
             const outDurationSec = effectiveDuration / rate;
 
-            const sampleRate = 44100;
+            // 22050 Hz Mono -> 48kbps MP3 (~350 KB/min) for instant upload even on slow 4G!
+            const sampleRate = 22050;
             const outLength = Math.floor(outDurationSec * sampleRate);
 
             const offlineCtx = new OfflineAudioContext(1, outLength, sampleRate);
@@ -626,46 +411,29 @@
             source.playbackRate.value = rate;
             source.detune.value = detuneCents;
 
-            // 1. Cascaded Allpass Phase Dispersers (Scrambles spectral phase completely, zero vocal mud!)
             const allpass1 = offlineCtx.createBiquadFilter();
-            allpass1.type = "allpass";
-            allpass1.frequency.value = isFilter1 ? 580 : 440;
-            allpass1.Q.value = 3.5;
+            allpass1.type = "allpass"; allpass1.frequency.value = isFilter1 ? 580 : 440; allpass1.Q.value = 3.5;
 
             const allpass2 = offlineCtx.createBiquadFilter();
-            allpass2.type = "allpass";
-            allpass2.frequency.value = isFilter1 ? 1950 : 1650;
-            allpass2.Q.value = 4.0;
+            allpass2.type = "allpass"; allpass2.frequency.value = isFilter1 ? 1950 : 1650; allpass2.Q.value = 4.0;
 
-            // 2. Clean High-Pass Filter (Removes low-end rumble so lyrics stay sharp)
             const highPass = offlineCtx.createBiquadFilter();
-            highPass.type = "highpass";
-            highPass.frequency.value = 90;
+            highPass.type = "highpass"; highPass.frequency.value = 90;
 
-            // 3. Gentle Dynamic Spectral Sweep (Breaks Mel-spectrogram peaks cleanly)
             const dynSweep = offlineCtx.createBiquadFilter();
-            dynSweep.type = "peaking";
-            dynSweep.frequency.value = isFilter1 ? 1250 : 1050;
-            dynSweep.Q.value = 2.0;
-            dynSweep.gain.value = isFilter1 ? 3.2 : 4.2;
+            dynSweep.type = "peaking"; dynSweep.frequency.value = isFilter1 ? 1250 : 1050;
+            dynSweep.Q.value = 2.0; dynSweep.gain.value = isFilter1 ? 3.2 : 4.2;
 
             const lfo = offlineCtx.createOscillator();
             const lfoGain = offlineCtx.createGain();
-            lfo.type = "sine";
-            lfo.frequency.value = isFilter1 ? 0.6 : 1.05;
+            lfo.type = "sine"; lfo.frequency.value = isFilter1 ? 0.6 : 1.05;
             lfoGain.gain.value = isFilter1 ? 500 : 750;
-            lfo.connect(lfoGain);
-            lfoGain.connect(dynSweep.frequency);
-            lfo.start(0);
+            lfo.connect(lfoGain); lfoGain.connect(dynSweep.frequency); lfo.start(0);
 
-            // 4. Vocal Clarity Presence Boost (Makes voice & lyrics super clear for Suno)
             const vocalClarity = offlineCtx.createBiquadFilter();
-            vocalClarity.type = "peaking";
-            vocalClarity.frequency.value = 2850;
-            vocalClarity.Q.value = 1.2;
-            vocalClarity.gain.value = 3.2;
+            vocalClarity.type = "peaking"; vocalClarity.frequency.value = 2850;
+            vocalClarity.Q.value = 1.2; vocalClarity.gain.value = 3.2;
 
-            // Connect DSP Chain
             source.connect(allpass1);
             allpass1.connect(allpass2);
             allpass2.connect(highPass);
@@ -674,13 +442,14 @@
             vocalClarity.connect(offlineCtx.destination);
 
             source.start(0, 0, effectiveDuration);
-            status.innerText = `⚙️ अल्ट्रा-लाइट 64kbps MP3 बन रहा है...`;
+            status.innerText = `⚙️ Super-light 48kbps MP3 ban raha hai...`;
 
             const rendered = await offlineCtx.startRendering();
             normalizeToZeroDBFS(rendered);
 
-            const mp3Blob = await encodeUltraLightMP3(rendered, 64);
-            const outSizeMB = (mp3Blob.size / (1024 * 1024)).toFixed(2);
+            const mp3Blob = await encodeFastMP3(rendered, 48);
+            const outSizeKB = Math.round(mp3Blob.size / 1024);
+            const sizeLabel = outSizeKB >= 1024 ? `${(outSizeKB / 1024).toFixed(2)} MB` : `${outSizeKB} KB`;
 
             if (blobUrl) URL.revokeObjectURL(blobUrl);
             blobUrl = URL.createObjectURL(mp3Blob);
@@ -690,12 +459,12 @@
             player.style.display = 'block';
 
             const randNum = Math.floor(100000 + Math.random() * 900000);
-            const finalFileName = `ManojChunks_F${filterNum}_${randNum}.mp3`;
+            const finalFileName = `Manoj4G_F${filterNum}_${randNum}.mp3`;
 
             const dlBtn = document.getElementById('dlBtn');
             dlBtn.href = blobUrl;
             dlBtn.download = finalFileName;
-            dlBtn.innerText = `⬇️ दोबारा डाउनलोड करें (${outSizeMB} MB MP3)`;
+            dlBtn.innerText = `⬇️ Dobara Download Karein (${sizeLabel} MP3)`;
             dlBtn.style.display = 'block';
 
             const autoLink = document.createElement('a');
@@ -705,21 +474,18 @@
             autoLink.click();
             document.body.removeChild(autoLink);
 
-            status.innerText = `✅ तैयार! ${outSizeMB} MB की Smart-Chunk MP3 डाउनलोड हो गई।`;
+            status.innerText = `✅ Ready! Sirf ${sizeLabel} ki fast-upload MP3 download ho gayi.`;
         } catch (err) {
             console.error(err);
-            status.innerText = "❌ Error: " + (err.message || "दोबारा ट्राई करें।");
+            status.innerText = "❌ Error: " + (err.message || "Dobara try karein.");
         } finally {
             isProcessing = false;
             convertBtn.disabled = false;
         }
     }
 
-    // Encodes 64kbps CBR MP3 with valid ID3v2.3 Header (Fast 4G upload, zero 30s stall)
-    async function encodeUltraLightMP3(audioBuffer, kbps) {
-        if (typeof lamejs === 'undefined') {
-            throw new Error("MP3 Encoder लोड नहीं हुआ, इंटरनेट चेक करके पेज रिफ़्रेश करें।");
-        }
+    async function encodeFastMP3(audioBuffer, kbps) {
+        if (typeof lamejs === 'undefined') throw new Error("MP3 Encoder load nahi hua, page refresh karein.");
         const sampleRate = audioBuffer.sampleRate;
         const floatSamples = audioBuffer.getChannelData(0);
         const len = floatSamples.length;
@@ -731,17 +497,14 @@
         }
 
         const mp3encoder = new lamejs.Mp3Encoder(1, sampleRate, kbps);
-        const id3Header = new Uint8Array([0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-        const mp3Data = [id3Header];
+        const mp3Data = [];
         const sampleBlockSize = 1152;
 
         for (let i = 0; i < len; i += sampleBlockSize) {
             const chunk = int16Samples.subarray(i, i + sampleBlockSize);
             const mp3buf = mp3encoder.encodeBuffer(chunk);
             if (mp3buf.length > 0) mp3Data.push(mp3buf);
-            if (i % (sampleBlockSize * 150) === 0) {
-                await new Promise(r => setTimeout(r, 0));
-            }
+            if (i % (sampleBlockSize * 150) === 0) await new Promise(r => setTimeout(r, 0));
         }
         const endBuf = mp3encoder.flush();
         if (endBuf.length > 0) mp3Data.push(endBuf);
@@ -758,30 +521,22 @@
         }
         if (maxPeak > 0 && maxPeak < 0.98) {
             const multiplier = 0.98 / maxPeak;
-            for (let i = 0; i < data.length; i++) {
-                data[i] *= multiplier;
-            }
+            for (let i = 0; i < data.length; i++) data[i] *= multiplier;
         }
     }
 
-    // --- FAST AUTO DETECT USING GEMINI 3.8 FLASH ---
     async function autoDetectSong() {
         if (!currentFile) return;
-
         const apiKey = localStorage.getItem('gemini_studio_key') || document.getElementById('geminiKeyInput').value.trim();
-        if (!apiKey) {
-            alert("Auto-Detect के लिए ऊपर बॉक्स में Gemini API Key डालकर SAVE दबाएं!");
-            return;
-        }
+        if (!apiKey) { alert("Auto-Detect ke liye upar box mein Gemini API Key daalkar SAVE dabayein!"); return; }
 
         const detectBtn = document.getElementById('detectBtn');
         const status = document.getElementById('statusBox');
         detectBtn.disabled = true;
-        status.innerText = "⚡ ऑडियो कम्प्रेस करके Gemini 3.8 को भेजा जा रहा है...";
+        status.innerText = "⚡ Audio compress karke Gemini 3.8 ko bheja ja raha hai...";
 
         try {
             const rawAudioBuf = await getDecodedAudio();
-            
             const fastCtx = new OfflineAudioContext(1, Math.floor(Math.min(rawAudioBuf.duration, 180) * 16000), 16000);
             const src = fastCtx.createBufferSource();
             src.buffer = rawAudioBuf;
@@ -789,10 +544,10 @@
             src.start(0);
             const smallBuf = await fastCtx.startRendering();
             
-            const tinyMp3Blob = await encodeUltraLightMP3(smallBuf, 32);
+            const tinyMp3Blob = await encodeFastMP3(smallBuf, 32);
             const base64Audio = await blobToBase64(tinyMp3Blob);
 
-            status.innerText = "🤖 Gemini 3.8 Flash स्टाइल और लिरिक्स निकाल रहा है...";
+            status.innerText = "🤖 Gemini 3.8 Flash style aur lyrics nikal raha hai...";
 
             const promptText = `Listen to this song and return ONLY valid JSON with two keys:
 1. "style": Concise Suno AI music style prompt in English (genre, regional vibe like Odia/Sambalpuri/Hindi, tempo, instruments, vocal gender/tone, max 160 chars).
@@ -824,12 +579,11 @@ Return strictly raw JSON without markdown.`;
 
             if (parsed.lyrics) generateBypass();
 
-            status.innerText = "✅ स्टाइल और बायपास लिरिक्स तैयार हैं!";
+            status.innerText = "✅ Style aur bypass lyrics ready hain!";
             setTimeout(() => switchTab('lyrics'), 350);
-
         } catch (err) {
             console.error(err);
-            status.innerText = "❌ Error: " + (err.message || "API Key या इंटरनेट चेक करें।");
+            status.innerText = "❌ Error: " + (err.message || "API Key ya internet check karein.");
         } finally {
             detectBtn.disabled = false;
         }
@@ -844,7 +598,6 @@ Return strictly raw JSON without markdown.`;
         });
     }
 
-    // --- JP DIGITAL STYLE HEAVY LYRICS BYPASS ---
     function generateBypass() {
         const input = document.getElementById('inputLyrics').value;
         if (!input.trim()) return;
@@ -861,7 +614,6 @@ Return strictly raw JSON without markdown.`;
                 result += line + '\n';
                 continue;
             }
-
             const segmenter = new Intl.Segmenter('hi', { granularity: 'grapheme' });
             const segments = Array.from(segmenter.segment(line)).map(s => s.segment);
 
@@ -871,7 +623,6 @@ Return strictly raw JSON without markdown.`;
                     result += char;
                     continue;
                 }
-
                 const randInv = invisibles[Math.floor(Math.random() * invisibles.length)];
                 if (Math.random() > 0.15) {
                     const randMark = jpMarks[Math.floor(Math.random() * jpMarks.length)];
@@ -882,14 +633,12 @@ Return strictly raw JSON without markdown.`;
             }
             if (l < lines.length - 1) result += '\n';
         }
-
         document.getElementById('outputLyrics').value = result;
     }
 
     function copyText(elementId, btnId) {
         const output = document.getElementById(elementId);
         if (!output.value) return;
-        
         output.select();
         output.setSelectionRange(0, 99999);
         navigator.clipboard.writeText(output.value);
